@@ -1,0 +1,105 @@
+
+:host{
+  .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.6); /* Borda inicial branca/translúcida */
+  }
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28255, 255, 255, 1%29' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+  }
+  .navbar-toggler:focus{
+    border-color: #fff;
+    box-shadow: none;
+  }
+
+  .navbar i {
+    color: #dddddd; /* Define a cor branca para todos os ícones na navbar */
+  }
+  .navbar i:hover {
+    color: #ffffff; /* Define a cor branca para todos os ícones na navbar */
+  }
+  .navbar a {
+    color: #dddddd;
+    i {
+      color: #dddddd;
+    }
+  }
+  .navbar a:hover {
+    color: #ffffff;
+    i {
+      color: #ffffff;
+    }
+  }
+
+
+  .nav-item {
+    display: flex; /* Torna o item flexível */
+    align-items: flex-end; /* Alinha o link para baixo */
+  }
+  .nav-link {
+    position: relative;
+  }
+
+  .nav-link .badge {
+    position: absolute;
+    top: 50%; /* Centraliza verticalmente */
+    right: 50%; /* Centraliza horizontalmente */
+    transform: translate(50%, -50%); /* Ajusta para o centro */
+    font-size: 0.75rem; /* Tamanho da fonte */
+    padding: 0.25em 0.4em; /* Margem interna */
+    border-radius: 50%; /* Badge circular */
+    min-width: 1.5em; /* Largura mínima */
+    height: 1.5em; /* Altura mínima */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centraliza o texto dentro da badge */
+    background-color: rgba(128, 128, 128, 0.7); /* Cinza translúcido */
+    color: white; /* Texto branco */
+    border: none; /* Sem borda */
+    box-shadow: none; /* Remove sombras */
+  }
+  // .navbar {
+  //   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  // }
+
+  .navbar-brand img {
+    height: 40px;
+  }
+
+  .badge {
+    font-size: 0.8rem;
+  }
+
+  /* Ajuste para a barra de busca em telas menores */
+  @media (max-width: 768px) {
+    .form-control {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+  @media (max-width: 576px) {
+    .nav-link .badge {
+      font-size: 0.65rem; /* Reduz o tamanho da fonte */
+      min-width: 1.2em; /* Reduz a largura mínima */
+      height: 1.2em; /* Reduz a altura */
+    }
+
+    .nav-link i {
+      font-size: 1.3rem; /* Reduz o tamanho do ícone */
+    }
+  }
+  .custom-navbar {
+    background: linear-gradient(90deg, #ff5733, #d6861e); /* Azul personalizado */
+    color: white;
+  }
+  // .navbar .dropdown-toggle::after {
+  //   color: white; /* Altera a cor da seta */
+  // }
+
+  .dropdown-menu.dropdown-menu-end .dropdown-item {
+    color:black;
+  }
+  .dropdown-menu.dropdown-menu-end .dropdown-item:hover {
+    color: white;
+    background-color: #7c7c7c;
+  }
+}

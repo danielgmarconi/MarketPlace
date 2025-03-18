@@ -1,0 +1,11 @@
+body {
+  padding-top: 56px; /* Space for fixed header */
+}
+.main-content {
+  margin-top: 56px;
+}
+.content-wrapper {
+  padding: 20px;
+  overflow-y: auto;
+  height: calc(100vh - 112px); /* Full height minus header and footer */
+}

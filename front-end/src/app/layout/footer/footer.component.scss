@@ -1,0 +1,13 @@
+:host{
+  footer {
+    height: 50px;
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1030;
+  }
+}

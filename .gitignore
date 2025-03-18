@@ -1,0 +1,69 @@
+# ---- Visual Studio ----
+
+# Build e dependências
+bin/
+obj/
+*.nuspec
+*.nupkg
+project.lock.json
+project.assets.json
+.vscode/
+.vs/
+*.suo
+*.user
+*.rsuser
+*.sln.docstates
+
+# Logs e Debug
+*.log
+*.tlog
+*.cache
+*.ilk
+*.pdb
+*.obj
+*.exe
+*.dll
+
+# Configurações locais
+*.userosscache
+*.suo
+*.userprefs
+*.csproj.user
+
+# Dependências do NuGet
+packages/
+*.nupkg
+# Se estiver usando lock de pacote do NuGet, remova a linha abaixo
+packages.lock.json
+
+# ---- Node.js ----
+
+# Dependências
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+
+# Saídas de build
+dist/
+build/
+coverage/
+
+# Configurações locais
+.npmrc
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Editor e IDEs
+.DS_Store
+.idea/
+*.swp
+Thumbs.db
+
+# Cache do TypeScript
+*.tsbuildinfo

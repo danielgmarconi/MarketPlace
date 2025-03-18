@@ -1,0 +1,95 @@
+<header class="navbar navbar-expand-lg fixed-top custom-navbar">
+  <div class="container-fluid">
+    <!-- Logo -->
+    <a class="navbar-brand" href="#">
+      <img src="logo.png" alt="Logo" style="height: 50px;">
+    </a>
+
+    <!-- Botão do menu hambúrguer para dispositivos menores -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Conteúdo do navbar -->
+    <div class="collapse navbar-collapse" id="navbarContent">
+
+      <!-- Barra de busca -->
+      <form class="d-flex w-100 mx-lg-4">
+        <input class="form-control me-2" type="search" placeholder="Buscar produtos" aria-label="Search">
+        <button class="btn btn-secondary" type="submit">
+          <i class="bi bi-search"></i>
+        </button>
+      </form>
+
+      <!-- Ícones à direita -->
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="navbar-brand" href="#"><i class="bi bi-question-circle"></i>&nbsp;Ajuda</a>
+        </li>
+        <li class="nav-item">
+          <a class="navbar-brand" href="#"><i class="bi bi-bank"></i>&nbsp;Central de Vendas</a>
+        </li>
+        <li class="nav-item">
+          <a class="navbar-brand" href="#"><i class="bi bi-bag-check"></i>&nbsp;Vender</a>
+        </li>
+        <!-- Carrinho -->
+        <li class="nav-item">
+          <a class="nav-link position-relative" href="#">
+            <i class="bi bi-cart" style="font-size: 1.5rem;"></i>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              3
+            </span>
+          </a>
+        </li>
+        <!-- Notificações -->
+        <li class="nav-item">
+          <a class="nav-link position-relative" href="#">
+            <i class="bi bi-bell" style="font-size: 1.5rem;"></i>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning">
+              5
+            </span>
+          </a>
+        </li>
+        <!-- Usuário -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle" style="font-size: 1.5rem;"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" href="#">Perfil</a></li>
+            <li><a class="dropdown-item" href="#">Configurações</a></li>
+            <li><a class="dropdown-item" href="#">Sair</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
+
+
+  <!-- <div class="d-flex align-items-end h-100">
+    <div class="buttonUserMenu" >
+      <img src="perfil.png"/>&nbsp;
+      <span>Daniel</span>
+    </div>
+  </div>
+  <div class="nav-content" style="background-color: blueviolet;">
+    <div class="container mt-5">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Digite sua pesquisa" aria-label="Recipient's username" aria-describedby="basic-addon2">
+        <button class="btn btn-search" type="button" id="basic-addon2">
+          <i class="bi bi-search"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <nav>
+    <button class="btn btn-light" (click)="_toggleSidebar()">Menu</button>
+    <button class="btn btn-light" routerLink="teste">Login/Register</button>
+  </nav> -->
+
+</header>
+
