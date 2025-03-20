@@ -9,5 +9,9 @@ namespace MarketPlace.Domain.Entities
     public class Entity
     {
         public int Id { get; set; }
+        public int IdUserCreate { get; set; }
+        public int? IdUserUpdate { get; set; }
+        public int DateCreate { get; set; }
+        public int? DateUpdate { get; set; }
     }
 }

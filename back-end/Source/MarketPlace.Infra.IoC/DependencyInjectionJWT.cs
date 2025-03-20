@@ -23,8 +23,7 @@ public static class DependencyInjectionJWT
                                                                                                ValidAudience = configuration["Jwt:Audience"],
                                                                                                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Secretkey"])),
                                                                                                ClockSkew = TimeSpan.Zero
-                                                                                               };
-        });
+                                                                                             }; });
         return services;
     }
 }

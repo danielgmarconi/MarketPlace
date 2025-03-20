@@ -4,6 +4,7 @@ using MarketPlace.Application.Services;
 using MarketPlace.Domain.Interfaces;
 using MarketPlace.Infra.Data.Context;
 using MarketPlace.Infra.Data.Repositories;
+using MarketPlace.Infra.Encryption;
 using MarketPlace.Infra.Jwt.Context;
 using MarketPlace.Infra.Jwt.Service;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,7 @@ public static class DependencyInjection
                                                                                                    Audience = configuration["Jwt:Audience"], 
                                                                                                    ExpiresMinutes = int.Parse(configuration["Jwt:ExpiresMinutes"])}); 
                                        });
+        services.AddScoped<IEncryptionService>(x => new EncryptionService(configuration["Secretkey"]));
 
         services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
 

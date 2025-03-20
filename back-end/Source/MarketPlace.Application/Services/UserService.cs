@@ -16,17 +16,21 @@ namespace MarketPlace.Application.Services
         private IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly IJwtService _jwtService;
-        public UserService(IUserRepository userRepository, IMapper mapper, IJwtService jwtService)
+        private readonly IEncryptionService _encryptionService;
+        public UserService(IUserRepository userRepository, IMapper mapper, IJwtService jwtService, IEncryptionService encryptionService)
         {
             _userRepository = userRepository;
             _mapper = mapper;
             _jwtService = jwtService;
+            _encryptionService = encryptionService;
         }
 
         public async Task<IEnumerable<UserDTO>> GetUsers()
         {
             var usersEntity = await _userRepository.GetUsers();
             var x = _jwtService.GenerateToken(1, "a@a.com");
+            var xxx = _encryptionService.Encrypt("teste");
+            var x1 = _encryptionService.Valid(xxx, "teste1");
             return _mapper.Map<IEnumerable<UserDTO>>(usersEntity);
         }
 

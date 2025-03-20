@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketPlace.Tests", "Test\M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketPlace.Infra.Jwt", "Source\MarketPlace.Infra.Jwt\MarketPlace.Infra.Jwt.csproj", "{5EC8B548-2FA6-4B3C-88AD-5EBD0B4510DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketPlace.Infra.Encryption", "Source\MarketPlace.Infra.Encryption\MarketPlace.Infra.Encryption.csproj", "{60C6C5EA-B8AA-441C-847D-19C37676BB83}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -115,6 +117,18 @@ Global
 		{5EC8B548-2FA6-4B3C-88AD-5EBD0B4510DA}.Release|x64.Build.0 = Release|Any CPU
 		{5EC8B548-2FA6-4B3C-88AD-5EBD0B4510DA}.Release|x86.ActiveCfg = Release|Any CPU
 		{5EC8B548-2FA6-4B3C-88AD-5EBD0B4510DA}.Release|x86.Build.0 = Release|Any CPU
+		{60C6C5EA-B8AA-441C-847D-19C37676BB83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60C6C5EA-B8AA-441C-847D-19C37676BB83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60C6C5EA-B8AA-441C-847D-19C37676BB83}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{60C6C5EA-B8AA-441C-847D-19C37676BB83}.Debug|x64.Build.0 = Debug|Any CPU
+		{60C6C5EA-B8AA-441C-847D-19C37676BB83}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{60C6C5EA-B8AA-441C-847D-19C37676BB83}.Debug|x86.Build.0 = Debug|Any CPU
+		{60C6C5EA-B8AA-441C-847D-19C37676BB83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60C6C5EA-B8AA-441C-847D-19C37676BB83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60C6C5EA-B8AA-441C-847D-19C37676BB83}.Release|x64.ActiveCfg = Release|Any CPU
+		{60C6C5EA-B8AA-441C-847D-19C37676BB83}.Release|x64.Build.0 = Release|Any CPU
+		{60C6C5EA-B8AA-441C-847D-19C37676BB83}.Release|x86.ActiveCfg = Release|Any CPU
+		{60C6C5EA-B8AA-441C-847D-19C37676BB83}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -127,5 +141,6 @@ Global
 		{2FBD575D-932A-42B4-A31A-48DF5D8BC492} = {90AC4BDE-37E4-4198-B7F8-5205EE0F1286}
 		{EFFB17E5-2EF9-4A99-AC34-E8099894B5EF} = {1767DF1F-6005-4921-A76F-C56CEE23D091}
 		{5EC8B548-2FA6-4B3C-88AD-5EBD0B4510DA} = {90AC4BDE-37E4-4198-B7F8-5205EE0F1286}
+		{60C6C5EA-B8AA-441C-847D-19C37676BB83} = {90AC4BDE-37E4-4198-B7F8-5205EE0F1286}
 	EndGlobalSection
 EndGlobal

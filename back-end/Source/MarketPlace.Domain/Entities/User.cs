@@ -13,5 +13,6 @@ namespace MarketPlace.Domain.Entities
         public string Password { get; private set; }
         public bool IsAdmin { get; private set; }
         public bool IsActive { get; private set; }
+
     }
 }
