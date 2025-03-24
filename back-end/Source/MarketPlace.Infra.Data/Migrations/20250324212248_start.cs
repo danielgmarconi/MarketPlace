@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace MarketPlace.Infra.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class inicial : Migration
+    public partial class start : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -23,8 +24,8 @@ namespace MarketPlace.Infra.Data.Migrations
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     IdUserCreate = table.Column<int>(type: "int", nullable: false),
                     IdUserUpdate = table.Column<int>(type: "int", nullable: true),
-                    DateCreate = table.Column<int>(type: "int", nullable: false),
-                    DateUpdate = table.Column<int>(type: "int", nullable: true)
+                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateUpdate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
