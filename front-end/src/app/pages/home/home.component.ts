@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MessageboxService } from '../../shared/messagebox/messagebox.service';
+import { IconType } from '../../shared/messagebox/icon-type';
 
 @Component({
   selector: 'app-home',
@@ -9,4 +11,9 @@ import { Component } from '@angular/core';
 })
 export class HomeComponent {
 
+  constructor(private messageboxService : MessageboxService){}
+  teste()
+  {
+    this.messageboxService.openModal('a', 'b', IconType.danger);
+  }
 }
