@@ -28,9 +28,6 @@ namespace MarketPlace.Application.Services
         public async Task<IEnumerable<UserDTO>> GetUsers()
         {
             var usersEntity = await _userRepository.GetUsers();
-            var x = _jwtService.GenerateToken(1, "a@a.com");
-            var xxx = _encryptionService.Encrypt("teste");
-            var x1 = _encryptionService.Valid(xxx, "teste1");
             return _mapper.Map<IEnumerable<UserDTO>>(usersEntity);
         }
 
@@ -41,8 +38,13 @@ namespace MarketPlace.Application.Services
         }
 
         public async Task Create(UserDTO userDto)
-        {
+       {
             var userEntity = _mapper.Map<User>(userDto);
+
+            userEntity.PasswordUpdate(_encryptionService.Encrypt(userEntity.Password));
+            //var x = _jwtService.GenerateToken(1, "a@a.com");
+            //var xxx = _encryptionService.Encrypt("teste");
+            //var x1 = _encryptionService.Valid(xxx, "teste1");
             await _userRepository.Create(userEntity);
         }
 

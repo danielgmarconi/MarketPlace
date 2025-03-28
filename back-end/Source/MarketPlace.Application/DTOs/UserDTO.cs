@@ -22,7 +22,7 @@ namespace MarketPlace.Application.DTOs
         [RegularExpression(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$", 
          ErrorMessage = "The password must be between 8 and 20 characters long, including at least one uppercase letter, one lowercase letter, one number, and one special character.")]
         [DisplayName("Password")]
-        public string Password { get; set; }
+        public string Password {  get; set; }
 
     }
 }

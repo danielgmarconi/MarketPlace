@@ -11,7 +11,8 @@ namespace MarketPlace.Domain.Validation
         public DomainExceptionValidation(string error) : base(error){}
         public static void When(bool hasError, string error)
         {
-            throw new NotImplementedException(error);
+            if (hasError)
+                throw new NotImplementedException(error);
         }
     }
 }

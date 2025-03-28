@@ -9,18 +9,17 @@ namespace MarketPlace.Domain.Entities
         public string Password { get; private set; }
         public bool IsAdmin { get; private set; }
         public bool IsActive { get; private set; }
-        public User(string name,
+        public User(int id,
+                    string name,
                     string email,
-                    string password,
-                    bool isadmin,
-                    bool isactive)
+                    string password)
         {
-            ValidateDomain(name, email, password, isactive);
-            IsAdmin = isadmin;
+            ValidateDomain(name, email, password, true);
             DateCreate = DateTime.Now;
         }
-        private void Update(int id,
+        public void Update(int id,
                             string name,
+                            string email,
                             string password,
                             bool isactive)
         {
@@ -28,11 +27,12 @@ namespace MarketPlace.Domain.Entities
             Id = id;
             IdUserUpdate = id;
             DateUpdate = DateTime.Now;
-            ValidateDomain(name, Email, password, isactive);
-
-            
+            ValidateDomain(name, email, password, isactive);    
         }
-
+        public void PasswordUpdate(string password)
+        {
+            Password = password;
+        }
         private void ValidateDomain(string name,
                                     string email,
                                     string password,
