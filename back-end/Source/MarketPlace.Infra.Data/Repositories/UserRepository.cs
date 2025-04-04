@@ -20,7 +20,7 @@ namespace MarketPlace.Infra.Data.Repositories
 
         public async Task<User> Create(User user)
         {
-            _context.Add(user);
+            _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return user;
         }

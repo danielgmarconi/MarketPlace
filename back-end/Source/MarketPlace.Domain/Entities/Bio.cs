@@ -11,9 +11,10 @@ namespace MarketPlace.Domain.Entities
         public int UserId { get; set; }
         public User User { get; set; }
         public string FullName { get; set; }
-        public string ProfilePhotoBase64 { get; set; }
-        public string SexPerson { get; set; }
-        public string Description { get; set; }
+        public string? ProfilePhotoBase64 { get; set; }
+        public string? SexPerson { get; set; }
+        public string? Description { get; set; }
 
     }
 }
+

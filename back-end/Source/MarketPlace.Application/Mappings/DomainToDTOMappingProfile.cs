@@ -14,6 +14,7 @@ namespace MarketPlace.Application.Mappings
         public DomainToDTOMappingProfile()
         {
             CreateMap<User, UserDTO>().ReverseMap();
+            CreateMap<Bio, BioDTO>().ReverseMap();
         }
     }
 }
