@@ -9,7 +9,11 @@ namespace MarketPlace.Domain.Entities
     public sealed class Bio : Entity
     {
         public int UserId { get; set; }
-        public string Name { get; set; }
+        public User User { get; set; }
+        public string FullName { get; set; }
+        public string ProfilePhotoBase64 { get; set; }
+        public string SexPerson { get; set; }
+        public string Description { get; set; }
 
     }
 }

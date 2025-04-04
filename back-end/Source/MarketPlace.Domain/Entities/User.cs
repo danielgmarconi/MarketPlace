@@ -9,6 +9,7 @@ namespace MarketPlace.Domain.Entities
         public string Password { get; private set; }
         public bool IsAdmin { get; private set; }
         public bool IsActive { get; private set; }
+        public Bio Bio { get; set; }
         public User(int id,
                     string name,
                     string email,
