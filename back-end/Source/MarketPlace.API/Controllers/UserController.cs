@@ -1,4 +1,6 @@
-﻿using MarketPlace.Application.DTOs;
+﻿using MarketPlace.API.Common;
+using MarketPlace.Application.Common;
+using MarketPlace.Application.DTOs;
 using MarketPlace.Application.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,10 +20,8 @@ namespace MarketPlace.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var users = await _userService.GetUsers();
-            if(users == null)
-                return NotFound("Users not found");
-            return Ok(users);
+            var result = await _userService.GetUsers();
+            return StatusCode(result.StatusCode, result.StatusCode == 200 ? result.Response : result.Message);
         }
         [HttpGet("{id:int}", Name = "GetUser")]
         public async Task<IActionResult> Get(int id)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using MarketPlace.Application.Common;
 using MarketPlace.Application.DTOs;
 using MarketPlace.Application.Interfaces;
 using MarketPlace.Domain.Entities;
@@ -25,12 +26,28 @@ namespace MarketPlace.Application.Services
             _encryptionService = encryptionService;
         }
 
-        public async Task<IEnumerable<UserDTO>> GetUsers()
-        {
-            var usersEntity = await _userRepository.GetUsers();
-            return _mapper.Map<IEnumerable<UserDTO>>(usersEntity);
-        }
+        //public async Task<MethodResponse> GetUsers()
+        //{
+        //    var methodResponse = new MethodResponse();
+        //    var usersEntity = await _userRepository.GetUsers();
+        //    methodResponse.Success = true;
+        //    methodResponse.Response = _mapper.Map<IEnumerable<UserDTO>>(usersEntity);
+        //    if (usersEntity == null || usersEntity.Count() == 0)
+        //    {
+        //        methodResponse.StatusCode = 400;
+        //        methodResponse.Message = "Users not found";
+        //    }
 
+
+
+
+        //    return methodResponse;
+        //}
+        //public async Task<IEnumerable<UserDTO>> GetUsers()
+        //{
+        //    var usersEntity = await _userRepository.GetUsers();
+        //    return _mapper.Map<IEnumerable<UserDTO>>(usersEntity);
+        //}
         public async Task<UserDTO> GetById(int? id)
         {
             var userEntity = await _userRepository.GetById(id);
