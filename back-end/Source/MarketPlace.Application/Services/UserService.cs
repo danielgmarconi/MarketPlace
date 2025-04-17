@@ -55,7 +55,7 @@ namespace MarketPlace.Application.Services
         }
 
         public async Task Create(UserDTO userDto)
-       {
+        {
             var userEntity = _mapper.Map<User>(userDto);
 
             userEntity.PasswordUpdate(_encryptionService.Encrypt(userEntity.Password));
