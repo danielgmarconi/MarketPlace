@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using AutoMapper;
 using FluentValidation;
+using FluentValidation.Results;
 using MarketPlace.Application.Common;
 using MarketPlace.Application.DTOs;
 using MarketPlace.Application.Interfaces;
@@ -22,15 +23,44 @@ namespace MarketPlace.Application.Services
             _mapper = mapper;
             _validator = validator;
         }
-        public Task<MethodResponse> Create(UserDTO model)
+        public async Task<MethodResponse> Create(UserDTO model)
         {
-            throw new NotImplementedException();
+            var result = new MethodResponse();
+            if (model == null)
+            {
+                result.StatusCode = 400;
+                result.Message = "Bad Request";
+                return result;
+            }
+            try
+            {
+                var validatorResult = await _validator.ValidateAsync(model);
+                if (!validatorResult.IsValid)
+                {
+                    result.StatusCode = 500;
+                    result.Message = "Invalid data";
+                    result.Response = validatorResult.Errors.Select(e => e.ErrorMessage).ToList(); ;
+                }
+
+                //    var userEntity = _mapper.Map<User>(userDto);
+                //userEntity.PasswordUpdate(_encryptionService.Encrypt(userEntity.Password));
+                //userEntity.DateCreated = DateTime.Now;
+                //await _userRepository.Create(userEntity);
+                //userEntity.PasswordUpdate("");
+                //result.Success = true;
+                //result.StatusCode = 201;
+                //result.Response = _mapper.Map<UserDTO>(userEntity);
+            }
+            catch (Exception e)
+            {
+                result.StatusCode = 500;
+                result.Message = e.Message;
+            }
+            return result;
         }
 
         public async Task<MethodResponse> Get(int id)
         {
-            var x = await _validator.ValidateAsync(new UserDTO());
-            var x2 = x.IsValid;
             var result = new MethodResponse();
             try
             {

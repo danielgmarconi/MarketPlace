@@ -16,14 +16,10 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        var applicationAssembly = Assembly.Load("MarketPlace.Application");
-
-        services.AddValidatorsFromAssembly(applicationAssembly);
-        var defaultConnection = configuration.GetConnectionString("DefaultConnection");
-        services.AddScoped<ISQLServerAdapter>(_ => new SQLServerAdapter(defaultConnection));
+        services.AddValidatorsFromAssembly(Assembly.Load("MarketPlace.Application"));
+        services.AddScoped<ISQLServerAdapter>(_ => new SQLServerAdapter(configuration.GetConnectionString("DefaultConnection")));
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserService, UserService>();
-
         services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
         return services;
     }
