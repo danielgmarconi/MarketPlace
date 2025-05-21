@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace MarketPlace.Domain.Entities
 {
-    public class Bios
+    public sealed class Bios : Entity
     {
+        public int? UserId { get; set; }
+        public string? StoreName { get; set; }
+        public string? Description { get; set; }
     }
 }

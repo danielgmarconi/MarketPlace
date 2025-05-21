@@ -1,5 +1,7 @@
 ﻿
+using System.Reflection;
 using DataAccessLayer.SqlServerAdapter;
+using FluentValidation;
 using MarketPlace.Application.Interfaces;
 using MarketPlace.Application.Mappings;
 using MarketPlace.Application.Services;
@@ -14,6 +16,9 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        var applicationAssembly = Assembly.Load("MarketPlace.Application");
+
+        services.AddValidatorsFromAssembly(applicationAssembly);
         var defaultConnection = configuration.GetConnectionString("DefaultConnection");
         services.AddScoped<ISQLServerAdapter>(_ => new SQLServerAdapter(defaultConnection));
         services.AddScoped<IUserRepository, UserRepository>();
