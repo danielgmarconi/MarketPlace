@@ -41,9 +41,9 @@ namespace MarketPlace.Application.Services
                     result.Message = "Invalid data";
                     result.Response = validatorResult.Errors.Select(e => e.ErrorMessage).ToList(); ;
                 }
+                var entity = _mapper.Map<User>(model);
 
-                //    var userEntity = _mapper.Map<User>(userDto);
-                //userEntity.PasswordUpdate(_encryptionService.Encrypt(userEntity.Password));
+                //entity.PasswordUpdate(_encryptionService.Encrypt(userEntity.Password));
                 //userEntity.DateCreated = DateTime.Now;
                 //await _userRepository.Create(userEntity);
                 //userEntity.PasswordUpdate("");
@@ -64,7 +64,7 @@ namespace MarketPlace.Application.Services
             var result = new MethodResponse();
             try
             {
-                result.Response = _mapper.Map<List<UserDTO>>(await _userRepository.Get(new User(id)));
+                result.Response = _mapper.Map<List<UserDTO>>(await _userRepository.Get(id));
                 result.Success = true;
                 result.StatusCode = 200;
             }

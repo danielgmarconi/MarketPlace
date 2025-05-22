@@ -16,10 +16,15 @@ namespace MarketPlace.Domain.Entities
         public bool? IsBlocked { get; private set; }
 
         public User() { }
-        public User(int id) 
+        public User(int id)
         {
-            DomainExceptionValidation.When(id <= 0, "Invalid Id value.");
+            DomainExceptionValidation.When(id <= 0, "Email is required.");
             Id = id;
+        }
+        public User(string email) 
+        {
+            DomainExceptionValidation.When(string.IsNullOrEmpty(email), "Email is required.");
+            Email = email;
         }
         public User(string fullName,
                     string email,
@@ -46,12 +51,19 @@ namespace MarketPlace.Domain.Entities
             DomainExceptionValidation.When(id <= 0, "Invalid Id value.");
             Validation();
         }
+        public void PasswordUpdate(string password)
+        {
+            DomainExceptionValidation.When(string.IsNullOrEmpty(password), "FullName is required.");
+            DomainExceptionValidation.When(password.Length < 7, "FullName cannot be less than 7 characters");
+            Password = password;
+        }
         public void Validation()
         {
-            DomainExceptionValidation.When(string.IsNullOrEmpty(FullName), "Invalid FullName value.");
+            DomainExceptionValidation.When(string.IsNullOrEmpty(FullName), "FullName is required.");
             DomainExceptionValidation.When(FullName.Length < 7 , "FullName cannot be less than 7 characters");
-            DomainExceptionValidation.When(string.IsNullOrEmpty(Email), "Invalid Email value.");
+            DomainExceptionValidation.When(string.IsNullOrEmpty(Email), "Email is required.");
             DomainExceptionValidation.When(Email.Length < 10, "Email cannot be less than 10 characters");
+            DomainExceptionValidation.When(string.IsNullOrEmpty(Password), "FullName is required.");
             DomainExceptionValidation.When(Password.Length < 7, "FullName cannot be less than 7 characters");
         }
 

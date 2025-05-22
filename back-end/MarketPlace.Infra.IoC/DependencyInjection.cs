@@ -7,6 +7,7 @@ using MarketPlace.Application.Mappings;
 using MarketPlace.Application.Services;
 using MarketPlace.Domain.Interfaces;
 using MarketPlace.Infra.Data.Repositories;
+using MarketPlace.Infra.Encryption;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,9 +19,12 @@ public static class DependencyInjection
     {
         services.AddValidatorsFromAssembly(Assembly.Load("MarketPlace.Application"));
         services.AddScoped<ISQLServerAdapter>(_ => new SQLServerAdapter(configuration.GetConnectionString("DefaultConnection")));
+        services.AddScoped<IEncryptionService>(x => new EncryptionService(configuration["Secretkey"]));
+        services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
+
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserService, UserService>();
-        services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
+
         return services;
     }
 }

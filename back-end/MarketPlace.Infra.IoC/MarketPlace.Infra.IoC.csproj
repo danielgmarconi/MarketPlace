@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MarketPlace.Application\MarketPlace.Application.csproj" />
     <ProjectReference Include="..\MarketPlace.Infra.Data\MarketPlace.Infra.Data.csproj" />
+    <ProjectReference Include="..\MarketPlace.Infra.Encryption\MarketPlace.Infra.Encryption.csproj" />
     <ProjectReference Include="..\MarketPlace.Infra.Jwt\MarketPlace.Infra.Jwt.csproj" />
   </ItemGroup>
 

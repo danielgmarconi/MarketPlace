@@ -9,7 +9,8 @@ namespace MarketPlace.Domain.Interfaces
 {
     public interface IUserRepository
     {
-        Task<List<User>> Get(User model);
+        Task<List<User>> Get(int id);
+        Task<List<User>> Get(string email);
         Task<int> Create(User model);
         Task Update(User model);
         Task Remove(User model);
