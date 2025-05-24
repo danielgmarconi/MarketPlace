@@ -13,17 +13,17 @@ namespace MarketPlace.API.Controllers
         {
             _userService = userService;
         }
-        [HttpGet("{id:int}")]
+        [HttpGet("model")]
+        public async Task<IActionResult> Get([FromQuery] UserDTO dto)
+        {
+            var result = await _userService.Get(dto);
+            return StatusCode(200, result);
+        }
+        [HttpGet("id:int")]
         public async Task<IActionResult> Get(int id)
         {
             var result = await _userService.Get(id);
-            return StatusCode(result.StatusCode, result);
-        }
-        [HttpGet("{email}")]
-        public async Task<IActionResult> Get(string email)
-        {
-            var result = await _userService.Get(email);
-            return StatusCode(result.StatusCode, result);
+            return StatusCode(200, result);
         }
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] UserDTO userDto)

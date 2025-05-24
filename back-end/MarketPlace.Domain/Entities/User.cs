@@ -9,23 +9,13 @@ namespace MarketPlace.Domain.Entities
 {
     public sealed class User : Entity
     {
-        public string? FullName { get; private set; }
-        public string? Email { get; private set; }
-        public string? Password { get; private set; }
-        public string? Status { get; private set; }
-        public bool? IsBlocked { get; private set; }
+        public string? FullName { get; set; }
+        public string? Email { get; set; }
+        public string? Password { get; set; }
+        public string? Status { get; set; }
+        public bool? IsBlocked { get; set; }
 
         public User() { }
-        public User(int id)
-        {
-            DomainExceptionValidation.When(id <= 0, "Email is required.");
-            Id = id;
-        }
-        public User(string email) 
-        {
-            DomainExceptionValidation.When(string.IsNullOrEmpty(email), "Email is required.");
-            Email = email;
-        }
         public User(string fullName,
                     string email,
                     string password)
@@ -35,27 +25,18 @@ namespace MarketPlace.Domain.Entities
             Password = password;
             Validation();
         }
-        public void Update(int id,
-                           string fullName,
+        public void Update(string fullName,
                            string email,
                            string password,
                            string status,
-                           bool IsBlocked)
+                           bool isBlocked)
         {
-            Id = id;
             FullName = fullName;
             Email = email;
             Password = password;
             Status = status;
-            
-            DomainExceptionValidation.When(id <= 0, "Invalid Id value.");
+            IsBlocked = isBlocked;
             Validation();
-        }
-        public void PasswordUpdate(string password)
-        {
-            DomainExceptionValidation.When(string.IsNullOrEmpty(password), "FullName is required.");
-            DomainExceptionValidation.When(password.Length < 7, "FullName cannot be less than 7 characters");
-            Password = password;
         }
         public void Validation()
         {

@@ -12,28 +12,22 @@ namespace MarketPlace.Infra.Data.Repositories
         {
             _sqlServerAdapter = sqlServerAdapter;
         }
-        public async Task<int> Create(User model)
+        public async Task<User> Create(User model)
         { 
             _sqlServerAdapter.Open();
-            var result = await _sqlServerAdapter.ExecuteScalarAsync("spUsersCreate", model);
-            return int.Parse(result.ToString() ?? "0");  
+            var id = await _sqlServerAdapter.ExecuteScalarAsync("spUsersCreate", model);
+            //var result = await Get(new User(int.Parse(id.ToString())));
+            return null;  
         }
         public async Task Remove(User model)
         {
             _sqlServerAdapter.Open();
             await _sqlServerAdapter.ExecuteNonQueryAsync("spUsersSelect", model);
         }
-        public async Task<List<User>> Get(int id)
+        public async Task<List<User>> Get(User model)
         {
             _sqlServerAdapter.Open();
-
-            return await _sqlServerAdapter.ExecuteReaderAsync<User>("spUsersSelect", new User(id)); ;               
-        }
-        public async Task<List<User>> Get(string email)
-        {
-            _sqlServerAdapter.Open();
-
-            return await _sqlServerAdapter.ExecuteReaderAsync<User>("spUsersSelect", new User(email)); ;
+            return await _sqlServerAdapter.ExecuteReaderAsync<User>("spUsersSelect", model);        
         }
         public async Task Update(User model)
         {
