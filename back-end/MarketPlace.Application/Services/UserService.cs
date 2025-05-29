@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Reflection;
+using AutoMapper;
 using FluentValidation;
 using MarketPlace.Application.Common;
 using MarketPlace.Application.DTOs;
@@ -31,7 +32,7 @@ namespace MarketPlace.Application.Services
             }
             try
             {
-                var validatorResult = await _validator.ValidateAsync(model);
+                var validatorResult = await _validator.ValidateAsync(model, options => options.IncludeRuleSets("Create"));
                 if (!validatorResult.IsValid)
                 {
                     result.Update(500, "Invalid data", validatorResult.Errors.Select(e => e.ErrorMessage).ToList());
@@ -60,7 +61,7 @@ namespace MarketPlace.Application.Services
                     result.Update(400, "Bad Request");
                     return result;
                 }
-                result.Update(true, 200, "Successfully executed", _mapper.Map<List<UserDTO>>(await _userRepository.Get(new User() { Id = id })));
+                result.Update(true, 200, "Successfully executed", _mapper.Map<UserDTO>(await _userRepository.Get(id)));
             }
             catch (Exception e)
             {
@@ -89,14 +90,63 @@ namespace MarketPlace.Application.Services
             return result;
         }
 
-        public Task<MethodResponse> Remove(int id)
+        public async Task<MethodResponse> Remove(int id)
         {
-            throw new NotImplementedException();
+            var result = new MethodResponse();
+            if (id <= 0)
+            {
+                result.Update(400, "Bad Request");
+                return result;
+            }
+            try
+            {
+                //var validatorResult = await _validator.ValidateAsync(model);
+                //if (!validatorResult.IsValid)
+                //{
+                //    result.Update(500, "Invalid data", validatorResult.Errors.Select(e => e.ErrorMessage).ToList());
+                //    return result;
+                //}
+                //var entity = _mapper.Map<User>(model);
+                //entity.Password = _encryptionService.Encrypt(entity.Password);
+                //entity = await _userRepository.Create(entity);
+                //entity.Password = string.Empty;
+                //result.Update(true, 201, "Created successfully", _mapper.Map<UserDTO>(entity));
+            }
+            catch (Exception e)
+            {
+                result.Update(500, "Error", e.Message);
+            }
+            return result;
         }
 
-        public Task<MethodResponse> Update(UserDTO model)
+        public async Task<MethodResponse> Update(UserDTO model)
         {
-            throw new NotImplementedException();
+            var result = new MethodResponse();
+            if (model == null)
+            {
+                result.Update(400, "Bad Request");
+                return result;
+            }
+            try
+            {
+                var validatorResult = await _validator.ValidateAsync(model, options => options.IncludeRuleSets("Update"));
+                if (!validatorResult.IsValid)
+                {
+                    result.Update(500, "Invalid data", validatorResult.Errors.Select(e => e.ErrorMessage).ToList());
+                    return result;
+                }
+                var entity = await _userRepository.Get(model.Id.Value);
+                entity.Update(model.FullName ?? entity.FullName,
+                              model.Email,
+                              model.Password == null ? entity.Password : _encryptionService.Encrypt(model.Password));
+                await _userRepository.Update(entity);
+                result.Update(true, 200, "Created successfully", _mapper.Map<UserDTO>(entity));
+            }
+            catch (Exception e)
+            {
+                result.Update(500, "Error", e.Message);
+            }
+            return result;
         }
     }
 }

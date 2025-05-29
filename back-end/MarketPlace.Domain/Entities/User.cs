@@ -23,19 +23,18 @@ namespace MarketPlace.Domain.Entities
             FullName = fullName;
             Email = email;
             Password = password;
+            Id = null;
             Validation();
         }
         public void Update(string fullName,
                            string email,
-                           string password,
-                           string status,
-                           bool isBlocked)
+                           string password)
         {
             FullName = fullName;
             Email = email;
             Password = password;
-            Status = status;
-            IsBlocked = isBlocked;
+            CreationDate = null;
+            ModificationDate = null;
             Validation();
         }
         public void Validation()

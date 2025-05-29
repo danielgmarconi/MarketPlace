@@ -19,7 +19,7 @@ namespace MarketPlace.API.Controllers
             var result = await _userService.Get(dto);
             return StatusCode(200, result);
         }
-        [HttpGet("id:int")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var result = await _userService.Get(id);
