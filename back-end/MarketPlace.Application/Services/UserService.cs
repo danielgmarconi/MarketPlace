@@ -14,13 +14,22 @@ namespace MarketPlace.Application.Services
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly IValidator<UserDTO> _validator;
+        private readonly IValidator<AuthenticationDTO> _validatorAuthentication;
         public readonly IEncryptionService _encryptionService;
-        public UserService(IUserRepository userRepository, IMapper mapper, IValidator<UserDTO> validator, IEncryptionService encryptionService)
+        private readonly IJwtService _jwtService;
+        public UserService(IUserRepository userRepository, 
+                           IMapper mapper, 
+                           IValidator<UserDTO> validator, 
+                           IValidator<AuthenticationDTO> validatorAuthentication, 
+                           IEncryptionService encryptionService,
+                           IJwtService jwtService)
         { 
             _userRepository = userRepository;
             _mapper = mapper;
             _validator = validator;
+            _validatorAuthentication = validatorAuthentication;
             _encryptionService = encryptionService;
+            _jwtService = jwtService;
         }
         public async Task<MethodResponse> Create(UserDTO model)
         {
@@ -135,30 +144,32 @@ namespace MarketPlace.Application.Services
             }
             return result;
         }
-        public async Task<MethodResponse> Authentication(AuthenticationDTO AuthenticationDto)
+        public async Task<MethodResponse> Authentication(AuthenticationDTO model)
         {
             var result = new MethodResponse();
             try
             {
-                if (AuthenticationDto == null)
+                if (model == null)
                 {
-                    result.StatusCode = 400;
-                    result.Message = "Bad Request";
+                    result.Update(400, "Invalid data");
                     return result;
                 }
-                var user = await _userRepository.Get(AuthenticationDto.Email);
-                DomainExceptionValidation.When(user == null, "Invalid email or password");
-                if (!_encryptionService.Valid(user.Password, AuthenticationDto.Password))
+                var validatorResult = await _validatorAuthentication.ValidateAsync(model);
+                if (!validatorResult.IsValid)
                 {
-                    result.StatusCode = 401;
-                    result.Message = "Unauthorized";
+                    result.Update(500, "Invalid data", validatorResult.Errors.Select(e => e.ErrorMessage).ToList());
+                    return result;
                 }
+                var user = await _userRepository.Get(model.Email);
+                if (user == null)
+                {
+                    result.Update(500, "Error", "Account not registered");
+                    return result;
+                }
+                if (!_encryptionService.Valid(user.Password, model.Password))
+                    result.Update(401, "Error", "Unauthorized");
                 else
-                {
-                    result.StatusCode = 200;
-                    result.Success = true;
-                    result.Response = _jwtService.GenerateToken(user.Id, user.Email);
-                }
+                    result.Update(true, 200, "Successfully executed", _jwtService.GenerateToken(user.Id.Value, user.Email));
             }
             catch (Exception e)
             {
