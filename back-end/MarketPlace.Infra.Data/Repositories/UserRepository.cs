@@ -18,10 +18,10 @@ namespace MarketPlace.Infra.Data.Repositories
             var id = await _sqlServerAdapter.ExecuteScalarAsync("spUsersCreate", model);
             return await Get(int.Parse(id.ToString()));
         }
-        public async Task Remove(User model)
+        public async Task Remove(int id)
         {
             _sqlServerAdapter.Open();
-            await _sqlServerAdapter.ExecuteNonQueryAsync("spUsersSelect", model);
+            await _sqlServerAdapter.ExecuteNonQueryAsync("spUsersRemove", new User() { Id = id });
         }
         public async Task<User> Get(int id)
         {

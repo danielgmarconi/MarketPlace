@@ -50,7 +50,6 @@ namespace MarketPlace.Application.Services
             }
             return result;
         }
-
         public async Task<MethodResponse> Get(int id)
         {
             var result = new MethodResponse();
@@ -69,7 +68,6 @@ namespace MarketPlace.Application.Services
             }
             return result;
         }
-
         public async Task<MethodResponse> Get(UserDTO model)
         {
             var result = new MethodResponse();
@@ -89,7 +87,6 @@ namespace MarketPlace.Application.Services
             }
             return result;
         }
-
         public async Task<MethodResponse> Remove(int id)
         {
             var result = new MethodResponse();
@@ -100,17 +97,8 @@ namespace MarketPlace.Application.Services
             }
             try
             {
-                //var validatorResult = await _validator.ValidateAsync(model);
-                //if (!validatorResult.IsValid)
-                //{
-                //    result.Update(500, "Invalid data", validatorResult.Errors.Select(e => e.ErrorMessage).ToList());
-                //    return result;
-                //}
-                //var entity = _mapper.Map<User>(model);
-                //entity.Password = _encryptionService.Encrypt(entity.Password);
-                //entity = await _userRepository.Create(entity);
-                //entity.Password = string.Empty;
-                //result.Update(true, 201, "Created successfully", _mapper.Map<UserDTO>(entity));
+                await _userRepository.Remove(id);
+                result.Update(true, 201, "Created successfully");
             }
             catch (Exception e)
             {
@@ -118,7 +106,6 @@ namespace MarketPlace.Application.Services
             }
             return result;
         }
-
         public async Task<MethodResponse> Update(UserDTO model)
         {
             var result = new MethodResponse();
@@ -145,6 +132,38 @@ namespace MarketPlace.Application.Services
             catch (Exception e)
             {
                 result.Update(500, "Error", e.Message);
+            }
+            return result;
+        }
+        public async Task<MethodResponse> Authentication(AuthenticationDTO AuthenticationDto)
+        {
+            var result = new MethodResponse();
+            try
+            {
+                if (AuthenticationDto == null)
+                {
+                    result.StatusCode = 400;
+                    result.Message = "Bad Request";
+                    return result;
+                }
+                var user = await _userRepository.Get(AuthenticationDto.Email);
+                DomainExceptionValidation.When(user == null, "Invalid email or password");
+                if (!_encryptionService.Valid(user.Password, AuthenticationDto.Password))
+                {
+                    result.StatusCode = 401;
+                    result.Message = "Unauthorized";
+                }
+                else
+                {
+                    result.StatusCode = 200;
+                    result.Success = true;
+                    result.Response = _jwtService.GenerateToken(user.Id, user.Email);
+                }
+            }
+            catch (Exception e)
+            {
+                result.StatusCode = 500;
+                result.Message = e.Message;
             }
             return result;
         }

@@ -8,6 +8,8 @@ using MarketPlace.Application.Services;
 using MarketPlace.Domain.Interfaces;
 using MarketPlace.Infra.Data.Repositories;
 using MarketPlace.Infra.Encryption;
+using MarketPlace.Infra.Jwt;
+using MarketPlace.Infra.Jwt.Service;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,6 +19,9 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddInfrastructureJWT(configuration);
+        services.AddScoped<IJwtService, JwtService>();
+
         services.AddValidatorsFromAssembly(Assembly.Load("MarketPlace.Application"));
         services.AddScoped<ISQLServerAdapter>(_ => new SQLServerAdapter(configuration.GetConnectionString("DefaultConnection")));
         services.AddScoped<IEncryptionService>(x => new EncryptionService(configuration["Secretkey"]));

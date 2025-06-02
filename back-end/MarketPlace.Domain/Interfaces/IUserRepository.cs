@@ -14,6 +14,6 @@ namespace MarketPlace.Domain.Interfaces
         Task<List<User>> Get(User model);
         Task<User> Create(User model);
         Task Update(User model);
-        Task Remove(User model);
+        Task Remove(int id);
     }
 }
