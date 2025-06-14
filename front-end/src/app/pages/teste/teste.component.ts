@@ -32,6 +32,10 @@ export class TesteComponent {
     //   }
     // }
   }
+  x2()
+  {
+   this.MessageboxService.openModal(this.xxx, this.xxx,  IconType.danger);
+  }
   x(){
 
     this.MessageboxService.openModal(this.xxx, this.xxx,  IconType.danger);
