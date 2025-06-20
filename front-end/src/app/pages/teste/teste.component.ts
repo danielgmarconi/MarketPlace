@@ -5,11 +5,10 @@ import { ModalContentService } from '../../services/modal-content.service';
 import { IconType } from '../../shared/messagebox/icon-type';
 
 @Component({
-  selector: 'app-teste',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './teste.component.html',
-  styleUrl: './teste.component.scss'
+    selector: 'app-teste',
+    imports: [CommonModule],
+    templateUrl: './teste.component.html',
+    styleUrl: './teste.component.scss'
 })
 export class TesteComponent {
   constructor(private MessageboxService: MessageboxService, private modalcontentService : ModalContentService) {}

@@ -5,11 +5,10 @@ import { MessageboxService } from './messagebox.service';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-messagebox',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './messagebox.component.html',
-  styleUrl: './messagebox.component.scss'
+    selector: 'app-messagebox',
+    imports: [CommonModule],
+    templateUrl: './messagebox.component.html',
+    styleUrl: './messagebox.component.scss'
 })
 export class MessageboxComponent {
   title: string = '';

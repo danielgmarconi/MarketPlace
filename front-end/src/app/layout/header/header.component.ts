@@ -1,30 +1,30 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { LoginComponent } from '../login/login.component';
 
 @Component({
-  selector: 'app-header',
-  standalone: true,
-  imports: [RouterLink],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+    selector: 'app-header',
+    imports: [RouterLink, LoginComponent],
+    templateUrl: './header.component.html',
+    styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
   @Output('closeSidebar') closeSidebar = new EventEmitter<MouseEvent>();
   @Output('toggleSidebar') toggleSidebar = new EventEmitter<void>();
 
 
-  screenWidth!: number;
+  //screenWidth!: number;
 
   // Atualiza a largura da tela ao redimensionar
   @HostListener('window:resize', ['$event'])
   onResize(): void {
-    this.screenWidth = window.innerWidth;
+    //this.screenWidth = window.innerWidth;
   }
 
   ngOnInit(): void {
     // Obtém o tamanho inicial da tela
 
-    this.screenWidth = window.innerWidth;
+    //this.screenWidth = window.innerWidth;
   }
 
   _closeSidebar(event: MouseEvent): void {

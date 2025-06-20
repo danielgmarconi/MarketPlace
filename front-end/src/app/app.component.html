@@ -1,11 +1,12 @@
-<app-header (toggleSidebar)="toggleSidebar()" (closeSidebar)="closeSidebar($event)"/>
-<div class="content fill" (click)="closeSidebar($event)">
+<app-header/>
+<div class="content fill">
   <div class="main-content">
     <div class="container">
+      <app-loading></app-loading>
       <router-outlet/>
-    <app-messagebox/>
+      <app-messagebox/>
     </div>
   </div>
 </div>
-<app-footer (closeSidebar)="closeSidebar($event)"/>
+<app-footer/>
 

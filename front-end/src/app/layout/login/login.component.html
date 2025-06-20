@@ -1,0 +1,47 @@
+<div class="login-body" [hidden]="!xxx">
+  <div class="login-wrapper">
+    <div class="card login-card">
+      <!-- <h3 class="text-center mb-4">Acessar</h3>
+      <form>
+        <div class="input-group mb-3">
+          <span class="input-group-text"><i class="fas fa-user"></i></span>
+          <input type="text" class="form-control" placeholder="Usuario">
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text"><i class="fas fa-key"></i></span>
+          <input type="password" class="form-control" placeholder="Senha">
+        </div>
+        <div class="d-grid">
+          <button class="btn login_btn" type="submit">Login</button>
+        </div>
+      <div class="text-center">
+        <a href="#" class="login-link">Esqueci minha senha</a>
+        <span class="mx-2 text-light">|</span>
+        <a href="#" class="login-link">Criar nova conta</a>
+      </div>
+      </form> -->
+      <h3 class="text-center mb-4">Nova Conta</h3>
+      <form #formLogin="ngForm">
+        <div class="input-group mb-3">
+          <span class="input-group-text"><i class="fas fa-user"></i></span>
+          <input type="text" class="form-control" placeholder="Nome Completo" [(ngModel)]="fullName" name="fullName" required>
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text"><i class="fas fa-at"></i></span>
+          <input type="text" class="form-control" placeholder="email" [(ngModel)]="email" name="email" required>
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text"><i class="fas fa-key"></i></span>
+          <input type="password" class="form-control" placeholder="Senha" [(ngModel)]="senha" (input)="verificarForcaSenha()" name="senha" required>
+        </div>
+        <div class="password-strength mt-2" [ngClass]="forcaClasse">
+          {{ forcaMensagem }}
+        </div>
+        <div class="d-grid">
+          <button class="btn login_btn" type="submit" (click)="submitForm()">Login</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
