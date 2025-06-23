@@ -1,6 +1,7 @@
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LoginComponent } from '../login/login.component';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
     selector: 'app-header',
@@ -8,30 +9,23 @@ import { LoginComponent } from '../login/login.component';
     templateUrl: './header.component.html',
     styleUrl: './header.component.scss'
 })
-export class HeaderComponent {
-  @Output('closeSidebar') closeSidebar = new EventEmitter<MouseEvent>();
-  @Output('toggleSidebar') toggleSidebar = new EventEmitter<void>();
-
-
-  //screenWidth!: number;
-
-  // Atualiza a largura da tela ao redimensionar
-  @HostListener('window:resize', ['$event'])
-  onResize(): void {
-    //this.screenWidth = window.innerWidth;
-  }
-
+export class HeaderComponent implements OnInit {
+   @ViewChild('loginComponent') loginComponent!: LoginComponent;
+   constructor(public authService: AuthService){}
   ngOnInit(): void {
-    // Obtém o tamanho inicial da tela
-
-    //this.screenWidth = window.innerWidth;
+    //alert(this.authService.isAuthenticated());
   }
 
-  _closeSidebar(event: MouseEvent): void {
-
-    this.closeSidebar.emit(event);
+  loginOpen()
+  {
+    this.loginComponent.loginOpen()
   }
-  _toggleSidebar(): void {
-    this.toggleSidebar.emit();
+  newAccountOpen()
+  {
+    this.loginComponent.newAccountOpen()
+  }
+  helpOpen()
+  {
+
   }
 }

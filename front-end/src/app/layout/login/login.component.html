@@ -1,47 +1,56 @@
-<div class="login-body" [hidden]="!xxx">
+@if(showModal)
+{
+<div class="login-body">
   <div class="login-wrapper">
     <div class="card login-card">
-      <!-- <h3 class="text-center mb-4">Acessar</h3>
-      <form>
+      @if(modalLogin)
+      {
+      <h3 class="text-center mb-4">Login</h3>
+      <form [formGroup]="formLogin">
         <div class="input-group mb-3">
           <span class="input-group-text"><i class="fas fa-user"></i></span>
-          <input type="text" class="form-control" placeholder="Usuario">
+          <input type="email" class="form-control" placeholder="Usuario" formControlName="email">
         </div>
         <div class="input-group mb-3">
           <span class="input-group-text"><i class="fas fa-key"></i></span>
-          <input type="password" class="form-control" placeholder="Senha">
+          <input type="password" class="form-control" placeholder="Senha" formControlName="password">
         </div>
-        <div class="d-grid">
-          <button class="btn login_btn" type="submit">Login</button>
+        <div class="d-flex justify-content-end gap-2">
+          <button class="btn login_btn" type="submit" (click)="access()">Entrar</button>
+          <button class="btn login_btn" type="submit" (click)="cancel()">Cancelar</button>
         </div>
-      <div class="text-center">
-        <a href="#" class="login-link">Esqueci minha senha</a>
-        <span class="mx-2 text-light">|</span>
-        <a href="#" class="login-link">Criar nova conta</a>
-      </div>
-      </form> -->
+        <div class="text-center">
+          <a href="#" class="login-link">Esqueci minha senha</a>
+          <span class="mx-2 text-light">|</span>
+          <a href="#" class="login-link">Criar nova conta</a>
+        </div>
+      </form>
+      }
+      @if(modalNewAccount)
+      {
       <h3 class="text-center mb-4">Nova Conta</h3>
       <form #formLogin="ngForm">
         <div class="input-group mb-3">
           <span class="input-group-text"><i class="fas fa-user"></i></span>
-          <input type="text" class="form-control" placeholder="Nome Completo" [(ngModel)]="fullName" name="fullName" required>
+          <input type="text" class="form-control" placeholder="Nome Completo">
         </div>
         <div class="input-group mb-3">
           <span class="input-group-text"><i class="fas fa-at"></i></span>
-          <input type="text" class="form-control" placeholder="email" [(ngModel)]="email" name="email" required>
+          <input type="text" class="form-control" placeholder="email" [(ngModel)]="email" name="email">
         </div>
         <div class="input-group mb-3">
           <span class="input-group-text"><i class="fas fa-key"></i></span>
-          <input type="password" class="form-control" placeholder="Senha" [(ngModel)]="senha" (input)="verificarForcaSenha()" name="senha" required>
+          <input type="password" class="form-control" placeholder="Senha" [(ngModel)]="senha" (input)="verificarForcaSenha()">
         </div>
         <div class="password-strength mt-2" [ngClass]="forcaClasse">
           {{ forcaMensagem }}
         </div>
         <div class="d-grid">
-          <button class="btn login_btn" type="submit" (click)="submitForm()">Login</button>
+          <button class="btn login_btn" type="submit" (click)="access()">Login</button>
         </div>
-
       </form>
+      }
     </div>
   </div>
 </div>
+}

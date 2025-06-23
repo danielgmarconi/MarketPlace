@@ -20,7 +20,7 @@ namespace MarketPlace.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Authentication([FromBody] AuthenticationDTO authenticationDTO)
         {
-            var result = await _userService.Authentication(authenticationDTO);
+                var result = await _userService.Authentication(authenticationDTO);
             return StatusCode(result.StatusCode, result);
         }
     }

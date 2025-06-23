@@ -1,33 +1,114 @@
+import { MethodResponse } from './../../models/method-response';
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoadingService } from '../../services/loading.service';
+import { AuthService } from '../../services/auth.service';
+import { Authentication } from '../../models/authentication';
+import { MessageboxService } from '../../shared/messagebox/messagebox.service';
+import { IconType } from '../../shared/messagebox/icon-type';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
   usuario: string = '';
   email: string = '';
   senha: string = '';
   fullName: string = '';
   forcaMensagem: string = '';
   forcaClasse: string = '';
-  public xxx : boolean = true;
-  @ViewChild('formLogin') form!: NgForm;
-
-  constructor(private loadingService: LoadingService) {}
 
 
 
-  onLogin() {
-    console.log('Usuário:', this.usuario);
-    console.log('Senha:', this.senha);
-    // Aqui você pode chamar um serviço de autenticação
+  modalLogin : boolean = true;
+  modalNewAccount : boolean = false;
+  showModal = false;
+
+  formLogin!: FormGroup;
+
+
+
+  constructor(private authService: AuthService,
+              private messageboxService : MessageboxService,
+              private fb: FormBuilder
+  ) {}
+
+  ngOnInit() {
+
   }
+  createFromGrupLogin()
+  {
+      this.formLogin = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8)]]
+    });
+  }
+  messageValidationLogin()
+  {
+    const lista: string[] = [];
+    let msg : string = ''
+    const ctrlEmail = this.formLogin.get('email');
+    if (ctrlEmail && ctrlEmail.errors && ctrlEmail.errors['required']) lista.push('Campo Email obrigatório.');
+    if (ctrlEmail && ctrlEmail.errors && ctrlEmail.errors['email']) lista.push('Email inválido.');
+    const ctrlPassword = this.formLogin.get('password');
+    if (ctrlPassword && ctrlPassword.errors && ctrlPassword.errors['required']) lista.push('Campo Senha obrigatório.');
+    if (ctrlPassword && ctrlPassword.errors && ctrlPassword.errors['minlength']) lista.push('Tamanho da senha invalido.');
+
+    for(let a=0; a<lista.length; a++)
+      msg+= a!=0 ? ('<br>' + lista[a]) : lista[a];
+    this.messageboxService.openModal('Atenção', msg, IconType.warning);
+  }
+
+  loginOpen()
+  {
+    this.showModal = true;
+    this.modalLogin = true;
+    this.modalNewAccount = false;
+    this.createFromGrupLogin();
+  }
+  newAccountOpen()
+  {
+    this.showModal = true;
+    this.modalLogin = false;
+    this.modalNewAccount = true;
+  }
+  cancel()
+  {
+    this.showModal = false;
+  }
+
+  access(){
+      if (!this.formLogin.valid)
+      {
+        this.messageValidationLogin();
+        return;
+      }
+      let authentication: Authentication = this.formLogin.value;
+      this.authService.login(authentication).subscribe({
+        next: res => {
+          this.formLogin.reset();
+          this.showModal = false;
+        },
+        error: err => {
+          if(err.status == 401)
+            this.messageboxService.openModal('Atenção', 'Acesso não autorizado', IconType.danger);
+          else if(err.status == 500)
+          {
+            let methodResponse:MethodResponse = err.error;
+            this.messageboxService.openModal('Atenção', methodResponse.response, IconType.danger);
+          }
+          else
+            this.messageboxService.openModal('Atenção', 'Erro interno', IconType.danger);
+        }
+      });
+  }
+
+
+
 
     verificarForcaSenha() {
     const senha = this.senha;
@@ -50,26 +131,5 @@ export class LoginComponent {
       this.forcaClasse = 'fraca';
     }
   }
-    submitForm() {
-      this.loadingService.show();
-      this.xxx = false;
-      setTimeout(() => {
-      this.loadingService.hide();
-      this.xxx = true;
-      }, 2000);
 
-    // if (this.form.invalid) {
-    //   Object.values(this.form.controls).forEach(control => control.markAsTouched());
-    //   alert('Formulário inválido!');
-    //   return;
-    // }
-    // Object.entries(this.form.controls).forEach(([name, control]) => {
-    //   control.markAsTouched();
-    //   console.log('Campo:', name, '| Valor:', control.value);
-    // });
-//     console.log('Formulário enviado com sucesso!');
-//     console.log('Usuário:', this.usuario);
-//     //console.log('Email:', this.email);
-//     console.log('Senha:', this.senha);
-  }
 }

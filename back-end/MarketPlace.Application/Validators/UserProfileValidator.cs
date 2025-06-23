@@ -13,7 +13,7 @@ namespace MarketPlace.Application.Validators
             RuleSet("Create", () => {
                 RuleFor(x => x.FullName)
                     .NotNull().NotEmpty().WithMessage("FullName is required.")
-                    .MinimumLength(7).WithMessage("The FullName must be at least 7 characters long.")
+                    .MinimumLength(7).WithMessage("The FullName mu  st be at least 7 characters long.")
                     .MaximumLength(150).WithMessage("The FullName must have a maximum of 150 characters.");
                 RuleFor(x => x.Email)
                     .NotEmpty().WithMessage("Email is required.")

@@ -174,7 +174,8 @@ namespace MarketPlace.Application.Services
             catch (Exception e)
             {
                 result.StatusCode = 500;
-                result.Message = e.Message;
+                result.Message = "Error";
+                result.Response = e.Message;
             }
             return result;
         }
