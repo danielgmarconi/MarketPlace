@@ -7,6 +7,8 @@ import { AuthService } from '../../services/auth.service';
 import { Authentication } from '../../models/authentication';
 import { MessageboxService } from '../../shared/messagebox/messagebox.service';
 import { IconType } from '../../shared/messagebox/icon-type';
+import { BodyLayoutTypeService, TypeBody } from '../../services/body-layout-type.service';
+import { CustomValidators } from '../../shared/validators/custom-validators';
 
 @Component({
   selector: 'app-login',
@@ -15,25 +17,25 @@ import { IconType } from '../../shared/messagebox/icon-type';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit{
-  usuario: string = '';
-  email: string = '';
-  senha: string = '';
+
   fullName: string = '';
   forcaMensagem: string = '';
   forcaClasse: string = '';
 
 
 
-  modalLogin : boolean = true;
-  modalNewAccount : boolean = false;
-  showModal = false;
+  modalLogin: boolean = true;
+  modalNewAccount: boolean = false;
+  showModal: boolean  = false;
 
   formLogin!: FormGroup;
+  formNewAccount!: FormGroup;
 
 
 
   constructor(private authService: AuthService,
               private messageboxService : MessageboxService,
+              public bodyLayoutTypeService: BodyLayoutTypeService,
               private fb: FormBuilder
   ) {}
 
@@ -47,6 +49,16 @@ export class LoginComponent implements OnInit{
       password: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
+
+  createFromGrupNewAccount()
+  {
+      this.formNewAccount = this.fb.group({
+      fullName: ['', [Validators.required, CustomValidators.fullName()]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8)]]
+    });
+  }
+
   messageValidationLogin()
   {
     const lista: string[] = [];
@@ -55,6 +67,24 @@ export class LoginComponent implements OnInit{
     if (ctrlEmail && ctrlEmail.errors && ctrlEmail.errors['required']) lista.push('Campo Email obrigatório.');
     if (ctrlEmail && ctrlEmail.errors && ctrlEmail.errors['email']) lista.push('Email inválido.');
     const ctrlPassword = this.formLogin.get('password');
+    if (ctrlPassword && ctrlPassword.errors && ctrlPassword.errors['required']) lista.push('Campo Senha obrigatório.');
+    if (ctrlPassword && ctrlPassword.errors && ctrlPassword.errors['minlength']) lista.push('Tamanho da senha invalido.');
+
+    for(let a=0; a<lista.length; a++)
+      msg+= a!=0 ? ('<br>' + lista[a]) : lista[a];
+    this.messageboxService.openModal('Atenção', msg, IconType.warning);
+  }
+  messageValidationNewAccount()
+  {
+    const lista: string[] = [];
+    let msg : string = ''
+    const ctrlFullName = this.formNewAccount.get('fullName');
+    if (ctrlFullName && ctrlFullName.errors && ctrlFullName.errors['required']) lista.push('Campo Nome Completo obrigatório.');
+    if (ctrlFullName && ctrlFullName.errors && ctrlFullName.errors['fullNameInvalido']) lista.push('Nome Completo inválido.');
+    const ctrlEmail = this.formNewAccount.get('email');
+    if (ctrlEmail && ctrlEmail.errors && ctrlEmail.errors['required']) lista.push('Campo Email obrigatório.');
+    if (ctrlEmail && ctrlEmail.errors && ctrlEmail.errors['email']) lista.push('Email inválido.');
+    const ctrlPassword = this.formNewAccount.get('password');
     if (ctrlPassword && ctrlPassword.errors && ctrlPassword.errors['required']) lista.push('Campo Senha obrigatório.');
     if (ctrlPassword && ctrlPassword.errors && ctrlPassword.errors['minlength']) lista.push('Tamanho da senha invalido.');
 
@@ -75,6 +105,7 @@ export class LoginComponent implements OnInit{
     this.showModal = true;
     this.modalLogin = false;
     this.modalNewAccount = true;
+    this.createFromGrupNewAccount();
   }
   cancel()
   {
@@ -91,6 +122,7 @@ export class LoginComponent implements OnInit{
       this.authService.login(authentication).subscribe({
         next: res => {
           this.formLogin.reset();
+          this.bodyLayoutTypeService.setBodyLayout(TypeBody.Default);
           this.showModal = false;
         },
         error: err => {
@@ -106,18 +138,22 @@ export class LoginComponent implements OnInit{
         }
       });
   }
+  create(){
+      if (!this.formNewAccount.valid)
+      {
+        this.messageValidationNewAccount();
+        return;
+      }
+  }
 
 
 
-
-    verificarForcaSenha() {
-    const senha = this.senha;
-
+  verificarForcaSenha(event: Event) {
+    const senha = (event.target as HTMLInputElement).value;
     const temLetra = /[a-zA-Z]/.test(senha);
     const temNumero = /[0-9]/.test(senha);
     const temEspecial = /[!@#$%^&*(),.?":{}|<>]/.test(senha);
-
-    if (senha.length < 6) {
+    if (senha.length < 8) {
       this.forcaMensagem = 'Senha fraca';
       this.forcaClasse = 'fraca';
     } else if (temLetra && temNumero && !temEspecial) {
