@@ -91,8 +91,27 @@ namespace MarketPlace.Application.Services
             }
             catch (Exception e)
             {
-                result.StatusCode = 500;
-                result.Message = e.Message;
+                result.Update(500, "Error", e.Message);
+            }
+            return result;
+        }
+        public async Task<MethodResponse> EmailExists(string email)
+        {
+            var result = new MethodResponse();
+            try
+            {
+                if (string.IsNullOrEmpty(email))
+                {
+                    result.Update(400, "Bad Request");
+                    return result;
+                }
+                var list = await _userRepository.Get(new User() { Email = email });
+
+                result.Update(true, 200, "Successfully executed", list.Count > 0);
+            }
+            catch (Exception e)
+            {
+                result.Update(500, "Error", e.Message);
             }
             return result;
         }
@@ -148,7 +167,7 @@ namespace MarketPlace.Application.Services
         {
             var result = new MethodResponse();
             try
-            {
+            {       
                 if (model == null)
                 {
                     result.Update(400, "Invalid data");
@@ -173,9 +192,7 @@ namespace MarketPlace.Application.Services
             }
             catch (Exception e)
             {
-                result.StatusCode = 500;
-                result.Message = "Error";
-                result.Response = e.Message;
+                result.Update(500, "Error", e.Message);
             }
             return result;
         }

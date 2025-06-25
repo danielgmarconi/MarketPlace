@@ -7,8 +7,5 @@ import { Component, EventEmitter, Output } from '@angular/core';
     styleUrl: './footer.component.scss'
 })
 export class FooterComponent {
-  @Output('closeSidebar') closeSidebar = new EventEmitter<MouseEvent>();
-  _closeSidebar(event: MouseEvent): void {
-    this.closeSidebar.emit(event);
-  }
+
 }

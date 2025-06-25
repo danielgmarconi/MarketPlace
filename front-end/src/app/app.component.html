@@ -1,9 +1,23 @@
 <app-header/>
 <div class="content fill">
   <div class="main-content">
-    <div class="container">
+    <div class="container-fluid">
       <app-loading></app-loading>
-      <router-outlet/>
+      @if(bodyLayoutTypeService.getBodyLayout() == 'D')
+      {
+        <router-outlet/>
+      }
+      @else if(bodyLayoutTypeService.getBodyLayout() == 'P')
+      {
+        <div class="row">
+          <div class="col-10 col-md-2 mb-2">
+            <app-sidebar-profile/>
+          </div>
+          <div class="col-12 col-md-8">
+            <router-outlet/>
+          </div>
+        </div>
+      }
       <app-messagebox/>
     </div>
   </div>

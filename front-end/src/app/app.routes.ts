@@ -1,3 +1,4 @@
+import { AddressesComponent } from './pages/addresses/addresses.component';
 import { HomeComponent } from './pages/home/home.component';
 import { TesteComponent } from './pages/teste/teste.component';
 ;
@@ -16,6 +17,10 @@ export const routes: Routes = [
   {
     path:'teste',
     component:TesteComponent
+  },
+  {
+    path:'addresses',
+    component:AddressesComponent
   },
   {
     path: '***',

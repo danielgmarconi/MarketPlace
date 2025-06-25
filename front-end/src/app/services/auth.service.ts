@@ -4,6 +4,7 @@ import { Observable, tap } from 'rxjs';
 import { Authentication } from '../models/authentication';
 import { environment } from '../../environments/environment';
 import { MethodResponse } from '../models/method-response';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,14 @@ export class AuthService {
         localStorage.setItem(this.tokenKey, methodResponse.response);
       })
     );
+  }
+  emailExists(email:string) : Observable<MethodResponse>
+  {
+    return this.http.get<MethodResponse>(environment.webapi +'/Authorization/EmailExists/' + email);
+  }
+  register(user:User)
+  {
+    return this.http.post<MethodResponse>(environment.webapi +'/Authorization/Register', user);
   }
   logout() {
     localStorage.removeItem(this.tokenKey);

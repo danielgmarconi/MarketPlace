@@ -20,7 +20,23 @@ namespace MarketPlace.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Authentication([FromBody] AuthenticationDTO authenticationDTO)
         {
-                var result = await _userService.Authentication(authenticationDTO);
+            var result = await _userService.Authentication(authenticationDTO);
+            return StatusCode(result.StatusCode, result);
+        }
+        [HttpPost]
+        [Route("Register")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Register([FromBody] UserDTO userDTO)
+        {
+            var result = await _userService.Create(userDTO);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet("EmailExists/{email}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> EmailExists(string email)
+        {
+            var result = await _userService.EmailExists(email);
             return StatusCode(result.StatusCode, result);
         }
     }
