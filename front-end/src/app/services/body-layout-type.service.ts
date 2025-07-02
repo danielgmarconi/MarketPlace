@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
-// Enum fora da classe
 export enum TypeBody {
   Default = 'D',
   Profile = 'P'

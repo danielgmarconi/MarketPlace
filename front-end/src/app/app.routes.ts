@@ -1,3 +1,4 @@
+import { authGuard } from './guard/auth.guard';
 import { AddressesComponent } from './pages/addresses/addresses.component';
 import { HomeComponent } from './pages/home/home.component';
 import { TesteComponent } from './pages/teste/teste.component';
@@ -16,6 +17,7 @@ export const routes: Routes = [
   },
   {
     path:'teste',
+    canActivate: [authGuard],
     component:TesteComponent
   },
   {
