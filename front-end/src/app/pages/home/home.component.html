@@ -1,4 +1,9 @@
-<app-grid-view [data]="users" [columns]="col" [buttons]="btn" buttonClassDefault="btn btn-primary"/>
+<button type="button" class="btn btn-primary" (click)="teste()">Primary</button>
+<form [formGroup]="formTeste">
+  <app-combo-box #teste11 [data$]="users$" bindValue="id" bindLabel="fullName" (valueChange)="valueChange($event)" formControlName="cbx"/>
+  <button type="button" class="btn btn-primary" (click)="teste1()">Primary</button>
+</form>
+<app-grid-view #gridUsuarios [data$]="users$" [columns]="col" [buttons]="btn" buttonClassDefault="btn btn-primary"/>
 
 <!--
 <div class="d-inline-block" placement="bottom" container="body">

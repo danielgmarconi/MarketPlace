@@ -69,7 +69,9 @@ namespace MarketPlace.Application.Services
                     result.Update(400, "Bad Request");
                     return result;
                 }
-                result.Update(true, 200, "Successfully executed", _mapper.Map<UserDTO>(await _userRepository.Get(id)));
+                var user = await _userRepository.Get(id);
+                user.Password = null;
+                result.Update(true, 200, "Successfully executed", _mapper.Map<UserDTO>(user));
             }
             catch (Exception e)
             {
@@ -87,7 +89,10 @@ namespace MarketPlace.Application.Services
                     result.Update(400, "Bad Request");
                     return result;
                 }
-                result.Update(true, 200, "Successfully executed", _mapper.Map<List<UserDTO>>(await _userRepository.Get(_mapper.Map<User>(model))));
+                var list = await _userRepository.Get(_mapper.Map<User>(model));
+                foreach (var user in list)
+                    user.Password = null;
+                result.Update(true, 200, "Successfully executed", _mapper.Map<List<UserDTO>>(list));
             }
             catch (Exception e)
             {

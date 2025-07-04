@@ -15,7 +15,7 @@ namespace MarketPlace.API.Controllers
         {
             _userService = userService;
         }
-        [HttpGet("model")]
+        [HttpGet]
         public async Task<IActionResult> Get([FromQuery] UserDTO dto)
         {
             var result = await _userService.Get(dto);

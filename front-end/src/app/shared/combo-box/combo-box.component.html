@@ -1,0 +1,6 @@
+<select class="form-select" [value]="value" (change)="onValueChange($event)">
+  @for (item of items; track $index)
+  {
+  <option [value]="item[bindValue]">{{item[bindLabel]}}</option>
+  }
+</select>

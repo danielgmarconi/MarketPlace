@@ -16,15 +16,18 @@ namespace MarketPlace.Domain.Entities
         public bool? IsBlocked { get; set; }
 
         public User() { }
-        public User(string fullName,
-                    string email,
-                    string password)
+        public User(string? fullName,
+                    string? email,
+                    string? password,
+                    string? status,
+                    bool? isBlocked)
         {
             FullName = fullName;
             Email = email;
             Password = password;
-            Id = null;
-            Validation();
+            Status = status;
+            IsBlocked = isBlocked;
+            //Validation();
         }
         public void Update(string fullName,
                            string email,
@@ -35,7 +38,7 @@ namespace MarketPlace.Domain.Entities
             Password = password;
             CreationDate = null;
             ModificationDate = null;
-            Validation();
+           // Validation();
         }
         public void Validation()
         {
