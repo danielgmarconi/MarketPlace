@@ -6,9 +6,10 @@ import { GridViewComponent, Setbutton, SetColumn } from '../../shared/grid-view/
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { BehaviorSubject, delay } from 'rxjs';
-import { ComboBoxComponent } from '../../shared/combo-box/combo-box.component';
+
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ComboBoxComponent } from '../../shared/combo-box/combo-box.component';
 
 @Component({
     selector: 'app-home',
@@ -68,7 +69,7 @@ export class HomeComponent {
     teste1()
   {
 
-    this.selectComp.forcarSelecao('19');
+    this.selectComp.setSelected('19');
     setTimeout(() => {
       console.log(this.formTeste.valid);
     });

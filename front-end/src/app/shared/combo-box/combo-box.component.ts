@@ -33,12 +33,11 @@ export class ComboBoxComponent<T> implements ControlValueAccessor, OnInit, OnDes
   }
   ngOnInit(): void {
     this.subscription = this.data$.subscribe(data => {
-       const novoItem: T = {[this.bindValue]: '',
-                            [this.bindLabel]: this.placeholder} as T;
+       const item: T = {[this.bindValue]: '', [this.bindLabel]: this.placeholder} as T;
        this.items = [];
-       this.items.push(novoItem);
+       this.items.push(item);
        data.forEach(item =>{ this.items.push(item)});
-       setTimeout(() => this.forcarSelecao(''));
+       setTimeout(() => this.setSelected(''));
 
     });
   }
@@ -61,7 +60,7 @@ export class ComboBoxComponent<T> implements ControlValueAccessor, OnInit, OnDes
     this.onTouched();
     this.valueChange.emit(this.items.find(i => i[this.bindValue] == selectedValue) ?? null);
   }
-    forcarSelecao(valor: any): void {
+    setSelected(valor: any): void {
 
   setTimeout(() => {
     this.value = valor ?? '';
