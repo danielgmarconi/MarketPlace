@@ -1,3 +1,3 @@
 export const environment = {
-  webapi: 'https://localhost:7147/api'
+  webapi: 'https://marketplace.marconisolucoesinovadoras.com/backend/api'
 };

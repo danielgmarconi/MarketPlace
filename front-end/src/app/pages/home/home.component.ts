@@ -69,7 +69,7 @@ export class HomeComponent {
     teste1()
   {
 
-    this.selectComp.setSelected('19');
+    this.selectComp.setSelected('');
     setTimeout(() => {
       console.log(this.formTeste.valid);
     });

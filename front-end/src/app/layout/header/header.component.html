@@ -6,12 +6,12 @@
     </a>
 
     <!-- Botão do menu hambúrguer para dispositivos menores -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" (click)="toggleNavbar()" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <!-- Conteúdo do navbar -->
-    <div class="collapse navbar-collapse" id="navbarContent">
+    <div class="collapse navbar-collapse" id="navbarContent" #navbarContent>
 
       <!-- Barra de busca -->
       <form class="d-flex w-100 mx-lg-4">

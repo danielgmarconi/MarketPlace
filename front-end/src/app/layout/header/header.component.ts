@@ -12,16 +12,29 @@ declare var bootstrap: any;
     styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit {
-   @ViewChild('loginComponent') loginComponent!: LoginComponent;
    constructor(public authService: AuthService,
                private bodyLayoutTypeService : BodyLayoutTypeService){}
   @ViewChild('userDropdown', { static: false }) dropdownButton!: ElementRef;
+  @ViewChild('loginComponent') loginComponent!: LoginComponent;
+  @ViewChild('navbarContent', { static: false }) navbarCollapse!: ElementRef;
   private dropdownInstance: any;
     toggleDropdown() {
     if (!this.dropdownInstance) {
       this.dropdownInstance = new bootstrap.Dropdown(this.dropdownButton.nativeElement);
     }
     this.dropdownInstance.toggle();
+  }
+  toggleNavbar() {
+    const collapseEl = this.navbarCollapse.nativeElement;
+    const collapseInstance = bootstrap.Collapse.getInstance(collapseEl)
+      ?? new bootstrap.Collapse(collapseEl);
+    collapseInstance.toggle();
+  }
+  closeNavbar() {
+  const bsCollapse = bootstrap.Collapse.getInstance(this.navbarCollapse.nativeElement);
+  if (bsCollapse) {
+    bsCollapse.hide();
+  }
   }
   ngOnInit(): void {
     //alert(this.authService.isAuthenticated());
@@ -30,6 +43,7 @@ export class HeaderComponent implements OnInit {
   loginOpen()
   {
     this.loginComponent.loginOpen()
+    this.closeNavbar();
   }
   newAccountOpen()
   {
