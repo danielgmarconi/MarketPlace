@@ -13,6 +13,9 @@ using MarketPlace.Infra.Jwt.Service;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+
+
+
 namespace MarketPlace.Infra.IoC;
 
 public static class DependencyInjection
