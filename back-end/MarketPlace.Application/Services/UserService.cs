@@ -70,7 +70,8 @@ namespace MarketPlace.Application.Services
                     return result;
                 }
                 var user = await _userRepository.Get(id);
-                user.Password = null;
+                if(user != null)
+                    user.Password = null;
                 result.Update(true, 200, "Successfully executed", _mapper.Map<UserDTO>(user));
             }
             catch (Exception e)
