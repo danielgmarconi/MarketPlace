@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-using AutoMapper;
-using FluentValidation;
+﻿using FluentValidation;
 using MarketPlace.Application.Common;
 using MarketPlace.Application.DTOs;
 using MarketPlace.Application.Interfaces;
@@ -12,20 +10,17 @@ namespace MarketPlace.Application.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IMapper _mapper;
         private readonly IValidator<UserDTO> _validator;
         private readonly IValidator<AuthenticationDTO> _validatorAuthentication;
         public readonly IEncryptionService _encryptionService;
         private readonly IJwtService _jwtService;
         public UserService(IUserRepository userRepository, 
-                           IMapper mapper, 
                            IValidator<UserDTO> validator, 
                            IValidator<AuthenticationDTO> validatorAuthentication, 
                            IEncryptionService encryptionService,
                            IJwtService jwtService)
         { 
             _userRepository = userRepository;
-            _mapper = mapper;
             _validator = validator;
             _validatorAuthentication = validatorAuthentication;
             _encryptionService = encryptionService;
@@ -47,11 +42,11 @@ namespace MarketPlace.Application.Services
                     result.Update(500, "Invalid data", validatorResult.Errors.Select(e => e.ErrorMessage).ToList());
                     return result;
                 }
-                var entity = _mapper.Map<User>(model);
-                entity.Password =  _encryptionService.Encrypt(entity.Password);
-                entity = await _userRepository.Create(entity);
-                entity.Password = string.Empty;
-                result.Update(true, 201, "Created successfully", _mapper.Map<UserDTO>(entity));
+
+                model.Password =  _encryptionService.Encrypt(model.Password);
+                model = await _userRepository.Create(model);
+                model.Password = string.Empty;
+                result.Update(true, 201, "Created successfully", model);
             }
             catch (Exception e)
             {
@@ -72,7 +67,7 @@ namespace MarketPlace.Application.Services
                 var user = await _userRepository.Get(id);
                 if(user != null)
                     user.Password = null;
-                result.Update(true, 200, "Successfully executed", _mapper.Map<UserDTO>(user));
+                result.Update(true, 200, "Successfully executed", user == null ? null : (UserDTO)user);
             }
             catch (Exception e)
             {
@@ -90,10 +85,10 @@ namespace MarketPlace.Application.Services
                     result.Update(400, "Bad Request");
                     return result;
                 }
-                var list = await _userRepository.Get(_mapper.Map<User>(model));
+                var list = (await _userRepository.Get(model)).Select(x => (UserDTO)x).ToList();
                 foreach (var user in list)
                     user.Password = null;
-                result.Update(true, 200, "Successfully executed", _mapper.Map<List<UserDTO>>(list));
+                result.Update(true, 200, "Successfully executed", list);
             }
             catch (Exception e)
             {
@@ -161,7 +156,8 @@ namespace MarketPlace.Application.Services
                               model.Email,
                               model.Password == null ? entity.Password : _encryptionService.Encrypt(model.Password));
                 await _userRepository.Update(entity);
-                result.Update(true, 200, "Created successfully", _mapper.Map<UserDTO>(entity));
+
+                result.Update(true, 200, "Created successfully", (UserDTO)entity);
             }
             catch (Exception e)
             {

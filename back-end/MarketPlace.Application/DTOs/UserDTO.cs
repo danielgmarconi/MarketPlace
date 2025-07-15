@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MarketPlace.Domain.Entities;
 
 namespace MarketPlace.Application.DTOs
 {
@@ -14,5 +15,24 @@ namespace MarketPlace.Application.DTOs
         public string? Password {  get; set; }
         public string? Status { get; set; }
         public bool? IsBlocked { get; set; }
+        public static implicit operator UserDTO(User user) => new UserDTO
+        {
+            Id = user.Id,
+            FullName = user.FullName,
+            Email = user.Email,
+            Password = user.Password,
+            Status = user.Status,
+            IsBlocked = user.IsBlocked
+        };
+
+        public static implicit operator User(UserDTO dto) => new User
+        {
+            Id = dto.Id,
+            FullName = dto.FullName,
+            Email = dto.Email,
+            Password = dto.Password,
+            Status = dto.Status,
+            IsBlocked = dto.IsBlocked
+        };
     }
 }

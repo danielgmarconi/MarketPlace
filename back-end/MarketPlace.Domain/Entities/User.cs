@@ -38,7 +38,7 @@ namespace MarketPlace.Domain.Entities
             Password = password;
             CreationDate = null;
             ModificationDate = null;
-           // Validation();
+            Validation();
         }
         public void Validation()
         {
