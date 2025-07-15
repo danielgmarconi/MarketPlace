@@ -173,7 +173,7 @@ namespace MarketPlace.Application.Services
         {
             var result = new MethodResponse();
             try
-            {       
+            {
                 if (model == null)
                 {
                     result.Update(400, "Invalid data");

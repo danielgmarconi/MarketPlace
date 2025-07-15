@@ -10,6 +10,7 @@ using MarketPlace.Infra.Data.Repositories;
 using MarketPlace.Infra.Encryption;
 using MarketPlace.Infra.Jwt;
 using MarketPlace.Infra.Jwt.Service;
+using MarketPlace.Infra.Mail.Service;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,6 +29,8 @@ public static class DependencyInjection
         services.AddValidatorsFromAssembly(Assembly.Load("MarketPlace.Application"));
         services.AddScoped<ISQLServerAdapter>(_ => new SQLServerAdapter(configuration.GetConnectionString("DefaultConnection")));
         services.AddScoped<IEncryptionService>(x => new EncryptionService(configuration["Secretkey"]));
+        services.AddScoped<IMailService, MailService>();
+
         services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
 
         services.AddScoped<IUserRepository, UserRepository>();
