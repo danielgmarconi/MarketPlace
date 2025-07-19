@@ -19,7 +19,7 @@ namespace MarketPlace.API.Controllers
         public async Task<IActionResult> Get([FromQuery] UserDTO dto)
         {
             var result = await _userService.Get(dto);
-            return StatusCode(200, result);
+            return StatusCode(result.StatusCode, result);
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
@@ -28,15 +28,15 @@ namespace MarketPlace.API.Controllers
             return StatusCode(200, result);
         }
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] UserDTO userDto)
+        public async Task<IActionResult> Post([FromBody] UserDTO dto)
         {
-            var result = await _userService.Create(userDto);
+            var result = await _userService.Create(dto);
             return StatusCode(result.StatusCode, result);
         }
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody] UserDTO userDto)
+        public async Task<IActionResult> Put([FromBody] UserDTO dto)
         {
-            var result = await _userService.Update(userDto);
+            var result = await _userService.Update(dto);
             return StatusCode(result.StatusCode, result);
         }
         [HttpDelete("{id}")]
