@@ -1,5 +1,6 @@
 ﻿using MarketPlace.Application.DTOs;
 using MarketPlace.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace MarketPlace.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class EmailTemplateController : ControllerBase
     {
         private readonly IEmailTemplateService _emailTemplateService;

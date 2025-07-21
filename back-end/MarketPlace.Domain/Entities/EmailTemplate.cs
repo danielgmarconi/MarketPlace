@@ -47,7 +47,7 @@ namespace MarketPlace.Domain.Entities
             DomainExceptionValidation.When(string.IsNullOrEmpty(Name), "Name is required.");
             DomainExceptionValidation.When(Name.Length < 7, "Name cannot be less than 7 characters");
             DomainExceptionValidation.When(string.IsNullOrEmpty(Description), "Description is required.");
-            DomainExceptionValidation.When(Description.Length < 7, "Description cannot be less than 7 characters");
+            DomainExceptionValidation.When(Description.Length > 500, "The Description must have a maximum of 500 characters.");
             DomainExceptionValidation.When(NumberParameters == null, "NumberParameters is required.");
             DomainExceptionValidation.When(NumberParameters != null && NumberParameters.Value  == 0, "NumberParameters must be greater than 0");
             DomainExceptionValidation.When(string.IsNullOrEmpty(HtmlBody), "HtmlBody is required.");

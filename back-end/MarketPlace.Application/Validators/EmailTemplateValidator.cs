@@ -59,7 +59,7 @@ public class EmailTemplateValidator : AbstractValidator<EmailTemplateDTO>
         if (model.Id != null)
         {
             var result = emailTemplateRepository.Get(model.Id.Value).Result;
-            if (result != null)
+            if (result == null)
                 return false;
         }
         return true;
