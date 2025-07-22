@@ -46,5 +46,11 @@ namespace MarketPlace.API.Controllers
             var result = await _emailTemplateService.Remove(id);
             return StatusCode(result.StatusCode, result);
         }
+        [HttpPost("MailAssembler")]
+        public async Task<IActionResult> MailAssembler(MailAssemblerDTO dto)
+        {
+            var result = await _emailTemplateService.MailAssembler(dto);
+            return StatusCode(result.StatusCode, result);
+        }
     }
 }

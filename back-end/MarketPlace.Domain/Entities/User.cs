@@ -9,6 +9,7 @@ namespace MarketPlace.Domain.Entities
 {
     public sealed class User : Entity
     {
+        public string? UserGuid { get; set; }
         public string? FullName { get; set; }
         public string? Email { get; set; }
         public string? Password { get; set; }
@@ -16,12 +17,14 @@ namespace MarketPlace.Domain.Entities
         public bool? IsBlocked { get; set; }
 
         public User() { }
-        public User(string? fullName,
+        public User(string? userGuid,
+                    string? fullName,
                     string? email,
                     string? password,
                     string? status,
                     bool? isBlocked)
         {
+            UserGuid = userGuid;
             FullName = fullName;
             Email = email;
             Password = password;
@@ -38,6 +41,7 @@ namespace MarketPlace.Domain.Entities
             Password = password;
             CreationDate = null;
             ModificationDate = null;
+            UserGuid = null;
             Validation();
         }
         public void Validation()

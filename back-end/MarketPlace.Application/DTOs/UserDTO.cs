@@ -10,6 +10,7 @@ namespace MarketPlace.Application.DTOs
     public sealed class UserDTO
     {
         public int? Id { get; set; }
+        public string? UserGuid { get; set; }
         public string? FullName { get; set; }
         public string? Email { get; set; }
         public string? Password {  get; set; }
@@ -18,6 +19,7 @@ namespace MarketPlace.Application.DTOs
         public static implicit operator UserDTO(User user) => new UserDTO
         {
             Id = user.Id,
+            UserGuid = user.UserGuid,
             FullName = user.FullName,
             Email = user.Email,
             Password = user.Password,
@@ -28,6 +30,7 @@ namespace MarketPlace.Application.DTOs
         public static implicit operator User(UserDTO dto) => new User
         {
             Id = dto.Id,
+            UserGuid= dto.UserGuid,
             FullName = dto.FullName,
             Email = dto.Email,
             Password = dto.Password,

@@ -13,11 +13,10 @@ export class AuthService {
   private tokenKey = 'token';
   constructor(private http: HttpClient) { }
 
-  login(model : Authentication): Observable<any> {
-    return this.http.post(environment.webapi + '/Authorization/Authentication', model).pipe(
+  login(model : Authentication): Observable<MethodResponse> {
+    return this.http.post<MethodResponse>(environment.webapi + '/Authorization/Authentication', model).pipe(
       tap((res: any) => {
-        const methodResponse :MethodResponse = res;
-        localStorage.setItem(this.tokenKey, methodResponse.response);
+        localStorage.setItem(this.tokenKey, res.response);
       })
     );
   }

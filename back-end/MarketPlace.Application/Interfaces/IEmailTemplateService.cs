@@ -16,5 +16,7 @@ namespace MarketPlace.Application.Interfaces
         Task<MethodResponse> Create(EmailTemplateDTO model);
         Task<MethodResponse> Update(EmailTemplateDTO model);
         Task<MethodResponse> Remove(int id);
+        Task<MethodResponse> MailAssembler(MailAssemblerDTO model);
+        Task<string> MailAssemblerCreate(MailAssemblerDTO model);
     }
 }

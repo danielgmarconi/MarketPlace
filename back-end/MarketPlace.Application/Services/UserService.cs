@@ -42,7 +42,7 @@ namespace MarketPlace.Application.Services
                     result.Update(500, "Invalid data", validatorResult.Errors.Select(e => e.ErrorMessage).ToList());
                     return result;
                 }
-
+                model.UserGuid = Guid.NewGuid().ToString();
                 model.Password =  _encryptionService.Encrypt(model.Password);
                 model = await _userRepository.Create(model);
                 model.Password = string.Empty;
@@ -185,6 +185,12 @@ namespace MarketPlace.Application.Services
                 if (user == null)
                 {
                     result.Update(500, "Error", "Account not registered");
+                    return result;
+                }
+                if (user.Status.Equals("P"))
+                {
+                    user.Password = string.Empty;
+                    result.Update(false, 500, "Account not activated", (UserDTO)user);
                     return result;
                 }
                 if (!_encryptionService.Valid(user.Password, model.Password))

@@ -48,10 +48,10 @@ public class EmailTemplateValidator : AbstractValidator<EmailTemplateDTO>
                 .NotNull().WithMessage("HtmlBody is required.")
                 .NotEmpty().WithMessage("HtmlBody is required.")
                 .Must(x => ValidateHtml(x)).WithMessage("invalid HtmlBody.");
-            RuleFor(x => x.Status)
-                .NotNull().WithMessage("Status is required.")
-                .NotEmpty().WithMessage("Status is required.")
-                .MaximumLength(1).WithMessage("The Status must have a maximum of 1 characters.");
+            //RuleFor(x => x.Status)
+            //    .NotNull().WithMessage("Status is required.")
+            //    .NotEmpty().WithMessage("Status is required.")
+            //    .MaximumLength(1).WithMessage("The Status must have a maximum of 1 characters.");
         });
     }
     private bool ValidateIdUpdate(IEmailTemplateRepository emailTemplateRepository, EmailTemplate model)

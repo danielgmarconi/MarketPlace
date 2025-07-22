@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 using MarketPlace.Application.Common;
 using MarketPlace.Application.DTOs;
 using MarketPlace.Application.Interfaces;
+using MarketPlace.Domain.Entities;
 using MarketPlace.Domain.Interfaces;
 
 namespace MarketPlace.Application.Services
@@ -20,7 +16,7 @@ namespace MarketPlace.Application.Services
         {
             _emailTemplateRepository = emailTemplateRepository;
             _validator = validator;
-            
+
         }
         public async Task<MethodResponse> Create(EmailTemplateDTO model)
         {
@@ -135,6 +131,40 @@ namespace MarketPlace.Application.Services
                 result.Update(500, "Error", e.Message);
             }
             return result;
+        }
+        public async Task<MethodResponse> MailAssembler(MailAssemblerDTO model)
+        {
+            var result = new MethodResponse();
+            try
+            {
+                if (model == null)
+                {
+                    result.Update(400, "Bad Request");
+                    return result;
+                }
+                result.Update(true, 200, "Successfully executed",  await MailAssemblerCreate(model));
+            }
+            catch (Exception e)
+            {
+                result.Update(500, "Error", e.Message);
+            }
+            return result;
+        }
+        public async Task<string> MailAssemblerCreate(MailAssemblerDTO model)
+        {
+            if (model.templateName == null)
+                throw new Exception("TemplateName is required.");
+            if (model.parmList == null || model.parmList.Length.Equals(0))
+                throw new Exception("parmList is required.");            
+            var list = await _emailTemplateRepository.Get(new EmailTemplate() { Name = model.templateName });
+            if(list == null || list.Count.Equals(0))
+                throw new Exception("EmailTemplate not found.");
+            var item = list.FirstOrDefault();
+            if (model.parmList.Length != item.NumberParameters.Value)
+                throw new Exception("different number of parameters");
+            for (int a = 0; a < item.NumberParameters; a++)
+                item.HtmlBody = item.HtmlBody.Replace($"{{{a+1}}}", model.parmList[a]);
+            return item.HtmlBody;
         }
     }
 }

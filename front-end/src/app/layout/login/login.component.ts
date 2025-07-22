@@ -129,7 +129,15 @@ export class LoginComponent implements OnInit{
           else if(err.status == 500)
           {
             let methodResponse:MethodResponse = err.error;
-            this.messageboxService.openModal('Atenção', methodResponse.response, IconType.danger);
+            if(typeof methodResponse.response === 'string')
+              this.messageboxService.openModal('Atenção', methodResponse.response, IconType.danger);
+            else
+            {
+              let user:User = methodResponse.response;
+              if(user.status == 'P')
+                this.messageboxService.openModal('Atenção', "Confirme o email de ativação.", IconType.info);
+            }
+
           }
           else
             this.messageboxService.openModal('Atenção', 'Erro interno', IconType.danger);
