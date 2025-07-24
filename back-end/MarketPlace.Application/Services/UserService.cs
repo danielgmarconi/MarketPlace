@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Reflection;
+using FluentValidation;
 using MarketPlace.Application.Common;
 using MarketPlace.Application.DTOs;
 using MarketPlace.Application.Interfaces;
@@ -54,11 +55,17 @@ namespace MarketPlace.Application.Services
 
                 model.UserGuid = Guid.NewGuid().ToString();
                 model.Password =  _encryptionService.Encrypt(model.Password);
+
+                var mailtemplate = await _emailTemplateService.MailAssemblerCreate(new MailAssemblerDTO
+                {
+                    templateName = "account activation",
+                    parmList = new string[] { _appSettings.AccountActivation(model.UserGuid) }
+                });
+                await _mailService.Send(model.Email, "Ativação da Conta", mailtemplate);
+
                 model = await _userRepository.Create(model);
                 model.Password = string.Empty;
-                var mailtemplate = await _emailTemplateService.MailAssemblerCreate(new MailAssemblerDTO { templateName = "account activation", 
-                                                                                            parmList = new string[] { _appSettings.AccountActivation(model.UserGuid) } });
-                await _mailService.Send(model.Email, "Ativação da Conta", mailtemplate);
+
                 result.Update(true, 201, "Created successfully", model);
             }
             catch (Exception e)
@@ -210,6 +217,37 @@ namespace MarketPlace.Application.Services
                     result.Update(401, "Error", "Unauthorized");
                 else
                     result.Update(true, 200, "Successfully executed", _jwtService.GenerateToken(user.Id.Value, user.Email));
+            }
+            catch (Exception e)
+            {
+                result.Update(500, "Error", e.Message);
+            }
+            return result;
+        }
+        public async Task<MethodResponse> ActivateAccount(string guid)
+        {
+            var result = new MethodResponse();
+            if (string.IsNullOrEmpty(guid))
+            {
+                result.Update(400, "Bad Request");
+                return result;
+            }
+            try
+            {
+                var list = await _userRepository.Get(new User { UserGuid = guid, Status = "P" }) ;
+                if (list != null && list.Count > 0)
+                {
+                    var user = list.FirstOrDefault();
+                    user.Status = "A";
+                    user.CreationDate = null;
+                    user.ModificationDate = null;
+                    user.UserGuid = null;
+                    await _userRepository.Update(user);
+                    result.Update(true, 200, "Successfully executed", "Account activated.");
+                }
+                else
+                    result.Update(false, 501, "Error", "invalid guid");
+
             }
             catch (Exception e)
             {

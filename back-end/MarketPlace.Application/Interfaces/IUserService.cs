@@ -12,4 +12,5 @@ public interface IUserService
     Task<MethodResponse> Update(UserDTO model);
     Task<MethodResponse> Remove(int id);
     Task<MethodResponse> Authentication(AuthenticationDTO authenticationDto);
+    Task<MethodResponse> ActivateAccount(string guid);
 }

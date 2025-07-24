@@ -39,5 +39,13 @@ namespace MarketPlace.API.Controllers
             var result = await _userService.EmailExists(email);
             return StatusCode(result.StatusCode, result);
         }
+
+        [HttpGet("ActivateAccount/{guid}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ActivateAccount(string guid)
+        {
+            var result = await _userService.ActivateAccount(guid);
+            return StatusCode(result.StatusCode, result);
+        }
     }
 }
