@@ -10,21 +10,30 @@ namespace MarketPlace.Application.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IEmailTemplateService _emailTemplateService;
         private readonly IValidator<UserDTO> _validator;
         private readonly IValidator<AuthenticationDTO> _validatorAuthentication;
         public readonly IEncryptionService _encryptionService;
         private readonly IJwtService _jwtService;
-        public UserService(IUserRepository userRepository, 
+        private readonly IMailService _mailService;
+        private readonly IAppSettings _appSettings;
+        public UserService(IUserRepository userRepository,
+                           IEmailTemplateService emailTemplateService,
                            IValidator<UserDTO> validator, 
                            IValidator<AuthenticationDTO> validatorAuthentication, 
                            IEncryptionService encryptionService,
-                           IJwtService jwtService)
+                           IJwtService jwtService,
+                           IMailService mailService,
+                           IAppSettings appSettings)
         { 
             _userRepository = userRepository;
+            _emailTemplateService = emailTemplateService;
             _validator = validator;
             _validatorAuthentication = validatorAuthentication;
             _encryptionService = encryptionService;
             _jwtService = jwtService;
+            _mailService = mailService;
+            _appSettings = appSettings;
         }
         public async Task<MethodResponse> Create(UserDTO model)
         {
@@ -42,10 +51,14 @@ namespace MarketPlace.Application.Services
                     result.Update(500, "Invalid data", validatorResult.Errors.Select(e => e.ErrorMessage).ToList());
                     return result;
                 }
+
                 model.UserGuid = Guid.NewGuid().ToString();
                 model.Password =  _encryptionService.Encrypt(model.Password);
                 model = await _userRepository.Create(model);
                 model.Password = string.Empty;
+                var mailtemplate = await _emailTemplateService.MailAssemblerCreate(new MailAssemblerDTO { templateName = "account activation", 
+                                                                                            parmList = new string[] { _appSettings.AccountActivation(model.UserGuid) } });
+                await _mailService.Send(model.Email, "Ativação da Conta", mailtemplate);
                 result.Update(true, 201, "Created successfully", model);
             }
             catch (Exception e)

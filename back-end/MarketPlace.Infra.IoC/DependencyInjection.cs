@@ -5,6 +5,7 @@ using FluentValidation;
 using MarketPlace.Application.Interfaces;
 using MarketPlace.Application.Services;
 using MarketPlace.Domain.Interfaces;
+using MarketPlace.Infra.Config;
 using MarketPlace.Infra.Data.Repositories;
 using MarketPlace.Infra.Encryption;
 using MarketPlace.Infra.Jwt;
@@ -28,6 +29,7 @@ public static class DependencyInjection
         services.AddValidatorsFromAssembly(Assembly.Load("MarketPlace.Application"));
         services.AddScoped<ISQLServerAdapter>(_ => new SQLServerAdapter(configuration.GetConnectionString("DefaultConnection")));
         services.AddScoped<IEncryptionService>(x => new EncryptionService(configuration["Secretkey"]));
+        services.AddScoped<IAppSettings, AppSettings>();
         services.AddScoped<IMailService, MailService>();
 
         services.AddScoped<IUserRepository, UserRepository>();
