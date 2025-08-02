@@ -1,1 +1,19 @@
-<p>activation works!</p>
+<div class="container d-flex justify-content-center" style="padding-top: 10vh; padding-bottom: 10vh;">
+  <div
+    class="card shadow-lg p-4 text-center result-card"
+    [ngClass]="isSuccess ? 'border-success bg-light-success' : 'border-danger bg-light-danger'"
+  >
+    <div class="card-body">
+      <i
+        class="display-4 mb-3"
+        [ngClass]="isSuccess ? 'bi bi-check-circle-fill text-success' : 'bi bi-x-circle-fill text-danger'"
+      ></i>
+      <h3 [ngClass]="isSuccess ? 'text-success' : 'text-danger'">
+        {{ isSuccess ? 'Conta ativada com sucesso' : 'Falha na ativação da conta' }}
+      </h3>
+      <p class="mb-4">
+        {{ isSuccess ? 'Seja bem-vindo!' : 'Por favor, tente novamente ou contate o suporte.' }}
+      </p>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { MethodResponse } from './../../models/method-response';
+import { MethodResponse } from '../../models/method-response';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -10,6 +10,7 @@ import { IconType } from '../../shared/messagebox/icon-type';
 import { BodyLayoutTypeService, TypeBody } from '../../services/body-layout-type.service';
 import { CustomValidatorsFormBuilder } from '../../shared/validators/custom-validators-form-builder';
 import { User } from '../../models/user';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -22,19 +23,16 @@ export class LoginComponent implements OnInit{
   fullName: string = '';
   forcaMensagem: string = '';
   forcaClasse: string = '';
-
-
-
-  modalLogin: boolean = true;
-  modalNewAccount: boolean = false;
-  showModal: boolean  = false;
-
+  eMail: string = '';
+  modalType: string = '';
   formLogin!: FormGroup;
   formNewAccount!: FormGroup;
 
 
 
-  constructor(private authService: AuthService,
+  constructor(private route: ActivatedRoute,
+              private router: Router,
+              private authService: AuthService,
               private messageboxService : MessageboxService,
               public bodyLayoutTypeService: BodyLayoutTypeService,
               private fb: FormBuilder
@@ -42,6 +40,20 @@ export class LoginComponent implements OnInit{
 
   ngOnInit() {
 
+    const action = this.route.snapshot.paramMap.get('action');
+
+    if(action == 'access')
+      this.loginOpen();
+    else if(action == 'newaccount')
+      this.newAccountOpen();
+    else if(action == 'lostpassword')
+    {
+
+    }
+    else if(action == 'changepassword')
+    {
+
+    }
   }
   createFromGrupLogin()
   {
@@ -94,21 +106,22 @@ export class LoginComponent implements OnInit{
   }
   loginOpen()
   {
-    this.showModal = true;
-    this.modalLogin = true;
-    this.modalNewAccount = false;
+    this.modalType = 'A';
     this.createFromGrupLogin();
   }
   newAccountOpen()
   {
-    this.showModal = true;
-    this.modalLogin = false;
-    this.modalNewAccount = true;
+    this.modalType = 'N';
     this.createFromGrupNewAccount();
   }
+  //   newAccountOpen()
+  // {
+  //   this.modalType = 'N';
+  //   this.createFromGrupNewAccount();
+  // }
   cancel()
   {
-    this.showModal = false;
+    this.router.navigate(['/home']);
   }
   access(){
       if (!this.formLogin.valid)
@@ -121,23 +134,25 @@ export class LoginComponent implements OnInit{
         next: res => {
           this.formLogin.reset();
           this.bodyLayoutTypeService.setBodyLayout(TypeBody.Default);
-          this.showModal = false;
         },
         error: err => {
           if(err.status == 401)
             this.messageboxService.openModal('Atenção', 'Acesso não autorizado', IconType.danger);
-          else if(err.status == 500)
+          else if(err.status >= 500)
           {
-            let methodResponse:MethodResponse = err.error;
-            if(typeof methodResponse.response === 'string')
-              this.messageboxService.openModal('Atenção', methodResponse.response, IconType.danger);
+            if(err.status == 501)
+              this.messageboxService.openModal('Atenção', "Conta não registrada.", IconType.info);
+            else if(err.status == 502)
+              this.messageboxService.openModal('Atenção', "Confirme o email de ativação.", IconType.info);
+            else if(err.status == 503)
+              this.messageboxService.openModal('Atenção', "Conta bloqueada.", IconType.info);
+            else if(err.status == 504)
+              this.messageboxService.openModal('Atenção', "Conta bloqueada, necessita alteração de senha link no e-mail.", IconType.info);
             else
             {
-              let user:User = methodResponse.response;
-              if(user.status == 'P')
-                this.messageboxService.openModal('Atenção', "Confirme o email de ativação.", IconType.info);
+              let methodResponse:MethodResponse = err.error;
+              this.messageboxService.openModal('Atenção', methodResponse.response, IconType.danger);
             }
-
           }
           else
             this.messageboxService.openModal('Atenção', 'Erro interno', IconType.danger);

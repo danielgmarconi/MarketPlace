@@ -1,0 +1,16 @@
+:host{
+  .result-card {
+    border-radius: 1rem;
+    max-width: 500px;
+    border: 1px solid #198754;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .bg-light-success {
+    background-color: #f8fff8;
+  }
+
+  .bg-light-danger {
+    background-color: #fff5f5;
+  }
+}

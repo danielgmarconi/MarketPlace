@@ -24,6 +24,10 @@ export class AuthService {
   {
     return this.http.get<MethodResponse>(environment.webapi +'/Authorization/EmailExists/' + email);
   }
+  activateAccount(guid:string)
+  {
+    return this.http.get<MethodResponse>(environment.webapi +'/Authorization/ActivateAccount/' + guid);
+  }
   register(user:User)
   {
     return this.http.post<MethodResponse>(environment.webapi +'/Authorization/Register', user);

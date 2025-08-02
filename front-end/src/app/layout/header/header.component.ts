@@ -1,13 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { LoginComponent } from '../login/login.component';
 import { AuthService } from '../../services/auth.service';
 import { BodyLayoutTypeService, TypeBody } from '../../services/body-layout-type.service';
 declare var bootstrap: any;
 
 @Component({
     selector: 'app-header',
-    imports: [RouterLink, LoginComponent],
+    imports: [RouterLink],
     templateUrl: './header.component.html',
     styleUrl: './header.component.scss'
 })
@@ -15,7 +14,6 @@ export class HeaderComponent implements OnInit {
    constructor(public authService: AuthService,
                private bodyLayoutTypeService : BodyLayoutTypeService){}
   @ViewChild('userDropdown', { static: false }) dropdownButton!: ElementRef;
-  @ViewChild('loginComponent') loginComponent!: LoginComponent;
   @ViewChild('navbarContent', { static: false }) navbarCollapse!: ElementRef;
   private dropdownInstance: any;
     toggleDropdown() {
@@ -42,12 +40,11 @@ export class HeaderComponent implements OnInit {
 
   loginOpen()
   {
-    this.loginComponent.loginOpen()
     this.closeNavbar();
   }
   newAccountOpen()
   {
-    this.loginComponent.newAccountOpen()
+    //this.loginComponent.newAccountOpen()
   }
   helpOpen()
   {

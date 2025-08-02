@@ -65,7 +65,7 @@
           <a class="navbar-brand" (click)="helpOpen()"><i class="bi bi-question-circle"></i>&nbsp;Ajuda</a>
         </li>
         <li class="nav-item">
-          <a class="navbar-brand" (click)="loginOpen()"><i class="bi bi-box-arrow-in-right"></i>&nbsp;Login</a>
+          <a class="navbar-brand" routerLink="login/access" (click)="loginOpen()"><i class="bi bi-box-arrow-in-right"></i>&nbsp;Login</a>
         </li>
         <li class="nav-item">
           <a class="navbar-brand" (click)="newAccountOpen()"><i class="bi bi-person-add"></i>&nbsp;Nova Conta</a>
@@ -74,5 +74,4 @@
     </div>
   </div>
 </header>
-<app-login #loginComponent/>
 

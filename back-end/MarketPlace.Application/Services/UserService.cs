@@ -204,13 +204,25 @@ namespace MarketPlace.Application.Services
                 var user = await _userRepository.Get(model.Email);
                 if (user == null)
                 {
-                    result.Update(500, "Error", "Account not registered");
+                    result.Update(501, "Error", "Account not registered");
                     return result;
                 }
-                if (user.Status.Equals("P"))
+                if (!user.IsBlocked.Value && user.Status.Equals("P"))
                 {
                     user.Password = string.Empty;
-                    result.Update(false, 500, "Account not activated", (UserDTO)user);
+                    result.Update(false, 502, "Account not activated", (UserDTO)user);
+                    return result;
+                }
+                if (user.IsBlocked.Value && user.Status.Equals("B"))
+                {
+                    user.Password = string.Empty;
+                    result.Update(false, 503, "blocked account", (UserDTO)user);
+                    return result;
+                }
+                if (user.IsBlocked.Value && user.Status.Equals("L"))
+                {
+                    user.Password = string.Empty;
+                    result.Update(false, 504, "account blocked, password change required", (UserDTO)user);
                     return result;
                 }
                 if (!_encryptionService.Valid(user.Password, model.Password))
