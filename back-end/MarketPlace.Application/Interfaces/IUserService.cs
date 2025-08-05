@@ -13,4 +13,5 @@ public interface IUserService
     Task<MethodResponse> Remove(int id);
     Task<MethodResponse> Authentication(AuthenticationDTO authenticationDto);
     Task<MethodResponse> ActivateAccount(string guid);
+    Task<MethodResponse> LostPassword(string email);
 }

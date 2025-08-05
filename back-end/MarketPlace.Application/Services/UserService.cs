@@ -20,13 +20,13 @@ namespace MarketPlace.Application.Services
         private readonly IAppSettings _appSettings;
         public UserService(IUserRepository userRepository,
                            IEmailTemplateService emailTemplateService,
-                           IValidator<UserDTO> validator, 
-                           IValidator<AuthenticationDTO> validatorAuthentication, 
+                           IValidator<UserDTO> validator,
+                           IValidator<AuthenticationDTO> validatorAuthentication,
                            IEncryptionService encryptionService,
                            IJwtService jwtService,
                            IMailService mailService,
                            IAppSettings appSettings)
-        { 
+        {
             _userRepository = userRepository;
             _emailTemplateService = emailTemplateService;
             _validator = validator;
@@ -54,7 +54,7 @@ namespace MarketPlace.Application.Services
                 }
 
                 model.UserGuid = Guid.NewGuid().ToString();
-                model.Password =  _encryptionService.Encrypt(model.Password);
+                model.Password = _encryptionService.Encrypt(model.Password);
 
                 var mailtemplate = await _emailTemplateService.MailAssemblerCreate(new MailAssemblerDTO
                 {
@@ -85,7 +85,7 @@ namespace MarketPlace.Application.Services
                     return result;
                 }
                 var user = await _userRepository.Get(id);
-                if(user != null)
+                if (user != null)
                     user.Password = null;
                 result.Update(true, 200, "Successfully executed", user == null ? null : (UserDTO)user);
             }
@@ -246,7 +246,7 @@ namespace MarketPlace.Application.Services
             }
             try
             {
-                var list = await _userRepository.Get(new User { UserGuid = guid, Status = "P" }) ;
+                var list = await _userRepository.Get(new User { UserGuid = guid, Status = "P" });
                 if (list != null && list.Count > 0)
                 {
                     var user = list.FirstOrDefault();
@@ -260,6 +260,46 @@ namespace MarketPlace.Application.Services
                 else
                     result.Update(false, 501, "Error", "invalid guid");
 
+            }
+            catch (Exception e)
+            {
+                result.Update(500, "Error", e.Message);
+            }
+            return result;
+        }
+
+        public async Task<MethodResponse> LostPassword(string email)
+        {
+            var result = new MethodResponse();
+            if (string.IsNullOrEmpty(email))
+            {
+                result.Update(400, "Bad Request");
+                return result;
+            }
+            try
+            {
+
+                var list = await _userRepository.Get(new User() { Email = email });
+                if (list == null || list.Count == 0)
+                {
+                    result.Update(501, "Error", "Account not registered");
+                    return result;
+                }
+                var User = list.FirstOrDefault();
+                var mailtemplate = await _emailTemplateService.MailAssemblerCreate(new MailAssemblerDTO
+                {
+                    templateName = "lost password",
+                    parmList = new string[] { _appSettings.LostPassword(User.UserGuid) }
+                });
+                await _mailService.Send(User.Email, "Aletração de senha", mailtemplate);
+                User.IsBlocked = true;
+                User.Status = "L";
+                User.CreationDate = null;
+                User.ModificationDate = null;
+                User.UserGuid = null;
+                await _userRepository.Update(User);
+
+                result.Update(true, 200, "Successfully executed", "Password change email has been sent.");
             }
             catch (Exception e)
             {

@@ -47,5 +47,12 @@ namespace MarketPlace.API.Controllers
             var result = await _userService.ActivateAccount(guid);
             return StatusCode(result.StatusCode, result);
         }
+        [HttpGet("LostPassword/{email}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> LostPassword(string email)
+        {
+            var result = await _userService.LostPassword(email);
+            return StatusCode(result.StatusCode, result);
+        }
     }
 }

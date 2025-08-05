@@ -19,5 +19,9 @@ namespace MarketPlace.Infra.Config
         {
            return FrontEndUrl() + "activation/" + guid;
         }
+        public string LostPassword(string guid)
+        {
+            return FrontEndUrl() + "lostpassword/" + guid;
+        }
     }
 }

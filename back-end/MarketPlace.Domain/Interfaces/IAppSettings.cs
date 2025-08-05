@@ -10,5 +10,6 @@ namespace MarketPlace.Domain.Interfaces
     {
         string FrontEndUrl();
         string AccountActivation(string guid);
+        string LostPassword(string guid);
     }
 }
