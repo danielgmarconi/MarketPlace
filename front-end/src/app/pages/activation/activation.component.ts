@@ -17,13 +17,13 @@ export class ActivationComponent implements OnInit {
     if(guid == null)
       return;
     this.authService.activateAccount(guid).subscribe({
-            next: res => {
-              this.isSuccess = true;
-              setTimeout(() => {this.router.navigate(['/home']);},3000);
-            },
-            error: err => {
-              this.isSuccess = false;
-            }
-          });
+      next: res => {
+        this.isSuccess = true;
+        setTimeout(() => {this.router.navigate(['/home']);},3000);
+      },
+      error: err => {
+        this.isSuccess = false;
+      }
+    });
   }
 }

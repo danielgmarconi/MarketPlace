@@ -31,7 +31,7 @@ namespace MarketPlace.Application.Services
                 var validatorResult = await _validator.ValidateAsync(model, options => options.IncludeRuleSets("Create"));
                 if (!validatorResult.IsValid)
                 {
-                    result.Update(500, "Invalid data", validatorResult.Errors.Select(e => e.ErrorMessage).ToList());
+                    result.Update(500, 1, "Invalid data", validatorResult.Errors.Select(e => e.ErrorMessage).ToList());
                     return result;
                 }
                 model = await _emailTemplateRepository.Create(model);
@@ -39,7 +39,7 @@ namespace MarketPlace.Application.Services
             }
             catch (Exception e)
             {
-                result.Update(500, "Error", e.Message);
+                result.Update(500, 500, "Error", e.Message);
             }
             return result;
         }
@@ -58,7 +58,7 @@ namespace MarketPlace.Application.Services
             }
             catch (Exception e)
             {
-                result.Update(500, "Error", e.Message);
+                result.Update(500, 500, "Error", e.Message);
             }
             return result;
         }
@@ -77,7 +77,7 @@ namespace MarketPlace.Application.Services
             }
             catch (Exception e)
             {
-                result.Update(500, "Error", e.Message);
+                result.Update(500, 500,"Error", e.Message);
             }
             return result;
         }
@@ -96,7 +96,7 @@ namespace MarketPlace.Application.Services
             }
             catch (Exception e)
             {
-                result.Update(500, "Error", e.Message);
+                result.Update(500, 500,"Error", e.Message);
             }
             return result;
         }
@@ -113,7 +113,7 @@ namespace MarketPlace.Application.Services
                 var validatorResult = await _validator.ValidateAsync(model, options => options.IncludeRuleSets("Update"));
                 if (!validatorResult.IsValid)
                 {
-                    result.Update(500, "Invalid data", validatorResult.Errors.Select(e => e.ErrorMessage).ToList());
+                    result.Update(500, 1, "Invalid data", validatorResult.Errors.Select(e => e.ErrorMessage).ToList());
                     return result;
                 }
                 var entity = await _emailTemplateRepository.Get(model.Id.Value);
@@ -128,7 +128,7 @@ namespace MarketPlace.Application.Services
             }
             catch (Exception e)
             {
-                result.Update(500, "Error", e.Message);
+                result.Update(500, 500,"Error", e.Message);
             }
             return result;
         }
@@ -146,7 +146,7 @@ namespace MarketPlace.Application.Services
             }
             catch (Exception e)
             {
-                result.Update(500, "Error", e.Message);
+                result.Update(500, 500, "Error", e.Message);
             }
             return result;
         }

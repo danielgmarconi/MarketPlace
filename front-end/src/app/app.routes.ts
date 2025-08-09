@@ -14,6 +14,10 @@ export const routes: Routes = [
     redirectTo: 'home'
   },
   {
+    path:'login/:action/:guid',
+    component: LoginComponent
+  },
+  {
     path:'login/:action',
     component: LoginComponent
   },

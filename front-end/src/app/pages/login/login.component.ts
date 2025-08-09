@@ -47,9 +47,7 @@ export class LoginComponent implements OnInit{
     else if(action == 'newaccount')
       this.newAccountOpen();
     else if(action == 'lostpassword')
-    {
-
-    }
+      this.lostPassword();
     else if(action == 'changepassword')
     {
 
@@ -114,11 +112,47 @@ export class LoginComponent implements OnInit{
     this.modalType = 'N';
     this.createFromGrupNewAccount();
   }
-  //   newAccountOpen()
-  // {
-  //   this.modalType = 'N';
-  //   this.createFromGrupNewAccount();
-  // }
+  lostPassword()
+  {
+    this.modalType = 'L';
+
+  }
+  resetPassword()
+  {
+    if(this.eMail.length == 0)
+    {
+      this.messageboxService.openModal('Atenção', 'favor preencher o email', IconType.danger);
+      return;
+    }
+    const padrao = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    if(!padrao.test(this.eMail))
+    {
+      this.messageboxService.openModal('Atenção', 'Email invalido', IconType.danger);
+      return;
+    }
+    this.authService.lostPassword(this.eMail).subscribe({
+      next: res => {
+        this.messageboxService.openModal('Atenção', "O link de alteração de senha foi envado no seu email com sucesso.", IconType.info);
+        this.router.navigate(['/home']);
+        //setTimeout(() => {this.router.navigate(['/home']);},3000);
+      },
+      error: err => {
+        if(err.status == 500)
+        {
+          let methodResponse:MethodResponse = err.error;
+          if(methodResponse.errorCode == 2)
+            this.messageboxService.openModal('Atenção', "Conta não registrada.", IconType.info);
+          else
+          {
+            let methodResponse:MethodResponse = err.error;
+            this.messageboxService.openModal('Atenção', methodResponse.response, IconType.danger);
+          }
+        }
+        else
+          this.messageboxService.openModal('Atenção', 'Erro interno', IconType.danger);
+      }
+    });
+  }
   cancel()
   {
     this.router.navigate(['/home']);
@@ -134,19 +168,21 @@ export class LoginComponent implements OnInit{
         next: res => {
           this.formLogin.reset();
           this.bodyLayoutTypeService.setBodyLayout(TypeBody.Default);
+          this.router.navigate(['/home']);
         },
         error: err => {
           if(err.status == 401)
             this.messageboxService.openModal('Atenção', 'Acesso não autorizado', IconType.danger);
-          else if(err.status >= 500)
+          else if(err.status == 500)
           {
-            if(err.status == 501)
+            let methodResponse:MethodResponse = err.error;
+            if(methodResponse.errorCode == 2)
               this.messageboxService.openModal('Atenção', "Conta não registrada.", IconType.info);
-            else if(err.status == 502)
+            else if(methodResponse.errorCode == 3)
               this.messageboxService.openModal('Atenção', "Confirme o email de ativação.", IconType.info);
-            else if(err.status == 503)
+            else if(methodResponse.errorCode == 4)
               this.messageboxService.openModal('Atenção', "Conta bloqueada.", IconType.info);
-            else if(err.status == 504)
+            else if(methodResponse.errorCode == 5)
               this.messageboxService.openModal('Atenção', "Conta bloqueada, necessita alteração de senha link no e-mail.", IconType.info);
             else
             {

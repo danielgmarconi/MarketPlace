@@ -1,0 +1,7 @@
+1 - Invalid data
+2 - Account not registered
+3 - Account not activated
+4 - blocked account
+5 - account blocked, password change required
+6 - invalid guid
+500 - Error

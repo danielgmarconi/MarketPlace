@@ -21,7 +21,7 @@ namespace MarketPlace.Infra.Config
         }
         public string LostPassword(string guid)
         {
-            return FrontEndUrl() + "lostpassword/" + guid;
+            return FrontEndUrl() + "login/changepassword/" + guid;
         }
     }
 }

@@ -49,7 +49,7 @@ namespace MarketPlace.Application.Services
                 var validatorResult = await _validator.ValidateAsync(model, options => options.IncludeRuleSets("Create"));
                 if (!validatorResult.IsValid)
                 {
-                    result.Update(500, "Invalid data", validatorResult.Errors.Select(e => e.ErrorMessage).ToList());
+                    result.Update(500, 1, "Invalid data", validatorResult.Errors.Select(e => e.ErrorMessage).ToList());
                     return result;
                 }
 
@@ -70,7 +70,7 @@ namespace MarketPlace.Application.Services
             }
             catch (Exception e)
             {
-                result.Update(500, "Error", e.Message);
+                result.Update(500, 500, "Error", e.Message);
             }
             return result;
         }
@@ -91,7 +91,7 @@ namespace MarketPlace.Application.Services
             }
             catch (Exception e)
             {
-                result.Update(500, "Error", e.Message);
+                result.Update(500, 500, "Error", e.Message);
             }
             return result;
         }
@@ -112,7 +112,7 @@ namespace MarketPlace.Application.Services
             }
             catch (Exception e)
             {
-                result.Update(500, "Error", e.Message);
+                result.Update(500, 500, "Error", e.Message);
             }
             return result;
         }
@@ -132,7 +132,7 @@ namespace MarketPlace.Application.Services
             }
             catch (Exception e)
             {
-                result.Update(500, "Error", e.Message);
+                result.Update(500, 500, "Error", e.Message);
             }
             return result;
         }
@@ -151,7 +151,7 @@ namespace MarketPlace.Application.Services
             }
             catch (Exception e)
             {
-                result.Update(500, "Error", e.Message);
+                result.Update(500, 500, "Error", e.Message);
             }
             return result;
         }
@@ -168,7 +168,7 @@ namespace MarketPlace.Application.Services
                 var validatorResult = await _validator.ValidateAsync(model, options => options.IncludeRuleSets("Update"));
                 if (!validatorResult.IsValid)
                 {
-                    result.Update(500, "Invalid data", validatorResult.Errors.Select(e => e.ErrorMessage).ToList());
+                    result.Update(500, 1, "Invalid data", validatorResult.Errors.Select(e => e.ErrorMessage).ToList());
                     return result;
                 }
                 var entity = await _userRepository.Get(model.Id.Value);
@@ -181,7 +181,7 @@ namespace MarketPlace.Application.Services
             }
             catch (Exception e)
             {
-                result.Update(500, "Error", e.Message);
+                result.Update(500, 500, "Error", e.Message);
             }
             return result;
         }
@@ -190,6 +190,7 @@ namespace MarketPlace.Application.Services
             var result = new MethodResponse();
             try
             {
+                result.Update(501, "Invalid data");
                 if (model == null)
                 {
                     result.Update(400, "Invalid data");
@@ -198,41 +199,41 @@ namespace MarketPlace.Application.Services
                 var validatorResult = await _validatorAuthentication.ValidateAsync(model);
                 if (!validatorResult.IsValid)
                 {
-                    result.Update(500, "Invalid data", validatorResult.Errors.Select(e => e.ErrorMessage).ToList());
+                    result.Update(500, 1, "Invalid data", validatorResult.Errors.Select(e => e.ErrorMessage).ToList());
                     return result;
                 }
                 var user = await _userRepository.Get(model.Email);
                 if (user == null)
                 {
-                    result.Update(501, "Error", "Account not registered");
+                    result.Update(500, 2, "Error", "Account not registered");
                     return result;
                 }
                 if (!user.IsBlocked.Value && user.Status.Equals("P"))
                 {
                     user.Password = string.Empty;
-                    result.Update(false, 502, "Account not activated", (UserDTO)user);
+                    result.Update(500, 3, "Account not activated", (UserDTO)user);
                     return result;
                 }
                 if (user.IsBlocked.Value && user.Status.Equals("B"))
                 {
                     user.Password = string.Empty;
-                    result.Update(false, 503, "blocked account", (UserDTO)user);
+                    result.Update(500, 4, "blocked account", (UserDTO)user);
                     return result;
                 }
                 if (user.IsBlocked.Value && user.Status.Equals("L"))
                 {
                     user.Password = string.Empty;
-                    result.Update(false, 504, "account blocked, password change required", (UserDTO)user);
+                    result.Update(500, 5, "Account blocked, password change required", (UserDTO)user);
                     return result;
                 }
                 if (!_encryptionService.Valid(user.Password, model.Password))
-                    result.Update(401, "Error", "Unauthorized");
+                    result.Update(401,"Unauthorized");
                 else
                     result.Update(true, 200, "Successfully executed", _jwtService.GenerateToken(user.Id.Value, user.Email));
             }
             catch (Exception e)
             {
-                result.Update(500, "Error", e.Message);
+                result.Update(500, 500, "Error", e.Message);
             }
             return result;
         }
@@ -258,16 +259,15 @@ namespace MarketPlace.Application.Services
                     result.Update(true, 200, "Successfully executed", "Account activated.");
                 }
                 else
-                    result.Update(false, 501, "Error", "invalid guid");
+                    result.Update(500, 6, "Error", "invalid guid");
 
             }
             catch (Exception e)
             {
-                result.Update(500, "Error", e.Message);
+                result.Update(500, 500, "Error", e.Message);
             }
             return result;
         }
-
         public async Task<MethodResponse> LostPassword(string email)
         {
             var result = new MethodResponse();
@@ -282,7 +282,7 @@ namespace MarketPlace.Application.Services
                 var list = await _userRepository.Get(new User() { Email = email });
                 if (list == null || list.Count == 0)
                 {
-                    result.Update(501, "Error", "Account not registered");
+                    result.Update(500, 2, "Error", "Account not registered");
                     return result;
                 }
                 var User = list.FirstOrDefault();
@@ -303,7 +303,7 @@ namespace MarketPlace.Application.Services
             }
             catch (Exception e)
             {
-                result.Update(500, "Error", e.Message);
+                result.Update(500, 500, "Error", e.Message);
             }
             return result;
         }
