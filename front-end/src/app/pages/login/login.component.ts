@@ -27,9 +27,8 @@ export class LoginComponent implements OnInit{
   modalType: string = '';
   formLogin!: FormGroup;
   formNewAccount!: FormGroup;
-
-
-
+  showPassword: boolean = false;
+  showRepeatPassword: boolean = false;
   constructor(private route: ActivatedRoute,
               private router: Router,
               private authService: AuthService,
@@ -49,9 +48,7 @@ export class LoginComponent implements OnInit{
     else if(action == 'lostpassword')
       this.lostPassword();
     else if(action == 'changepassword')
-    {
-
-    }
+      this.changePassword();
   }
   createFromGrupLogin()
   {
@@ -104,18 +101,24 @@ export class LoginComponent implements OnInit{
   }
   loginOpen()
   {
+    this.showPassword = false;
     this.modalType = 'A';
     this.createFromGrupLogin();
   }
   newAccountOpen()
   {
+    this.showPassword = false;
     this.modalType = 'N';
     this.createFromGrupNewAccount();
+    this.formNewAccount.get('password')?.setValue('');
   }
   lostPassword()
   {
     this.modalType = 'L';
-
+  }
+  changePassword(){
+    this.showPassword = false;
+    this.modalType = 'C';
   }
   resetPassword()
   {
@@ -134,7 +137,6 @@ export class LoginComponent implements OnInit{
       next: res => {
         this.messageboxService.openModal('Atenção', "O link de alteração de senha foi envado no seu email com sucesso.", IconType.info);
         this.router.navigate(['/home']);
-        //setTimeout(() => {this.router.navigate(['/home']);},3000);
       },
       error: err => {
         if(err.status == 500)

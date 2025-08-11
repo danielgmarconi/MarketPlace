@@ -69,4 +69,41 @@
 input.ng-invalid.ng-touched {
   border-color: red;
 }
+  /* ... seu CSS existente ... */
+
+  /* botão ao estilo do .input-group-text */
+  .btn-group-text-like {
+    background-color: #FFC312;
+    border: none;
+    padding: 0 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* altura pareada ao input bootstrap */
+    line-height: 1.5;
+  }
+
+  /* quando o botão vier no final do input-group,
+     arredonda o lado direito para casar com o input */
+  .input-group > .form-control + .btn-group-text-like,
+  .input-group > .input-group-text + .form-control + .btn-group-text-like {
+    border-top-right-radius: 0.375rem;
+    border-bottom-right-radius: 0.375rem;
+  }
+
+  /* se quiser um hover igual ao seu pattern de botões */
+  .btn-group-text-like:hover {
+    filter: brightness(0.95);
+    cursor: pointer;
+  }
+
+  .btn-group-text-like:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(255,195,18,.35);
+  }
+
+  /* ícone centralizado */
+  .btn-group-text-like i {
+    pointer-events: none;
+  }
 }
