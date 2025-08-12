@@ -54,5 +54,13 @@ namespace MarketPlace.API.Controllers
             var result = await _userService.LostPassword(email);
             return StatusCode(result.StatusCode, result);
         }
+        [HttpPost]
+        [Route("ChangePassword")]
+        [AllowAnonymous]
+        public async Task<IActionResult> RegistChangePassworder([FromBody] UserDTO userDTO)
+        {
+            var result = await _userService.ChangePassword(userDTO);
+            return StatusCode(result.StatusCode, result);
+        }
     }
 }

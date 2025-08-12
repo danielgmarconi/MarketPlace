@@ -22,10 +22,10 @@ namespace MarketPlace.Application.Validators
                 RuleFor(x => x.Password)
                     .NotNull().WithMessage("Password is required.")
                     .NotEmpty().WithMessage("Password is required.")
-                    .Matches(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$")
+                    .Matches(RegexValidator.Password)
                     .WithMessage("The Password must be between 8 and 20 characters long, including at least one uppercase letter, one lowercase letter, one number, and one special character.");
                 RuleFor(x => x)
-                    .Must(x => userRepository.Get(x.Email).Result == null ).WithMessage("Email already exists.");
+                    .Must(x => userRepository.Get(x.Email).Result == null).WithMessage("Email already exists.");
             });
             RuleSet("Update", () => {
                 RuleFor(x => x)
@@ -39,13 +39,28 @@ namespace MarketPlace.Application.Validators
                     .NotNull().WithMessage("Email is required.")
                     .NotEmpty().WithMessage("Email is required.")
                     .EmailAddress().WithMessage("Email is required.");
-                 RuleFor(x => x)
-                    .Must(x => ValidateEmailUpdate(userRepository, x)).WithMessage("Email is different from the one registered");
                 RuleFor(x => x)
-                    .Must(x=>ValidatePasswordUpdate(x))
+                   .Must(x => ValidateEmailUpdate(userRepository, x)).WithMessage("Email is different from the one registered");
+                RuleFor(x => x)
+                    .Must(x => ValidatePasswordUpdate(x))
                     .WithMessage("The Password must be between 8 and 20 characters long, including at least one uppercase letter, one lowercase letter, one number, and one special character.");
 
-            });           
+            });
+
+            RuleSet("ChangePassword", () => {
+                RuleFor(x => x)
+                    .Must(x => x.Id != null || !string.IsNullOrWhiteSpace(x.UserGuid))
+                    .WithMessage("Enter Id or UserGuid.");
+                RuleFor(x => x.UserGuid)
+                    .Must(x => ValidateGuid(x))
+                    .WithMessage("Invalid UserGuid.");
+                RuleFor(x => x.Password)
+                    .NotNull().WithMessage("Password is required.")
+                    .NotEmpty().WithMessage("Password is required.")
+                    .Matches(RegexValidator.Password)
+                    .WithMessage("The Password must be between 8 and 20 characters long, including at least one uppercase letter, one lowercase letter, one number, and one special character.");
+
+            });
         }
         private bool ValidateEmailUpdate(IUserRepository userRepository, UserDTO model)
         {
@@ -57,10 +72,16 @@ namespace MarketPlace.Application.Validators
             }
             return true;
         }
-        private bool ValidatePasswordUpdate(UserDTO model) 
+        private bool ValidatePasswordUpdate(UserDTO model)
         {
             if (model.Password != null)
-                return Regex.IsMatch(model.Password, "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,20}$");
+                return Regex.IsMatch(model.Password, RegexValidator.Password);
+            return true;
+        }
+        private bool ValidateGuid(string? guid)
+        { 
+            if(guid != null)
+                return Regex.IsMatch(guid, RegexValidator.Guid);
             return true;
         }
     }
