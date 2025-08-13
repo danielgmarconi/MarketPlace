@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.7" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,6 +17,7 @@
     <ProjectReference Include="..\MarketPlace.Infra.Data\MarketPlace.Infra.Data.csproj" />
     <ProjectReference Include="..\MarketPlace.Infra.Encryption\MarketPlace.Infra.Encryption.csproj" />
     <ProjectReference Include="..\MarketPlace.Infra.Jwt\MarketPlace.Infra.Jwt.csproj" />
+    <ProjectReference Include="..\MarketPlace.Infra.Localizer\MarketPlace.Infra.Localizer.csproj" />
     <ProjectReference Include="..\MarketPlace.Infra.Mail\MarketPlace.Infra.Mail.csproj" />
   </ItemGroup>
 

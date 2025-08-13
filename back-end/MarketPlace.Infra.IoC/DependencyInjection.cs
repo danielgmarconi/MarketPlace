@@ -10,6 +10,7 @@ using MarketPlace.Infra.Data.Repositories;
 using MarketPlace.Infra.Encryption;
 using MarketPlace.Infra.Jwt;
 using MarketPlace.Infra.Jwt.Service;
+using MarketPlace.Infra.Localizer;
 using MarketPlace.Infra.Mail.Service;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,6 +32,7 @@ public static class DependencyInjection
         services.AddScoped<IEncryptionService>(x => new EncryptionService(configuration["Secretkey"]));
         services.AddScoped<IAppSettings, AppSettings>();
         services.AddScoped<IMailService, MailService>();
+        services.AddScoped<IMessageLocalizer, MessageLocalizer>();
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserService, UserService>();

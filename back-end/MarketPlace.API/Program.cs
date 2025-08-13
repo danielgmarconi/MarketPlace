@@ -1,5 +1,9 @@
+using System.Globalization;
 using MarketPlace.Infra.IoC;
+using Microsoft.AspNetCore.Localization;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddLocalization(o => o.ResourcesPath = "Resources");
+
 
 // Add services to the container.
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -17,11 +21,17 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddSwaggerGen();
 
-
-
 var app = builder.Build();
+var supported = new[] { "pt-BR", "en-US", "es-ES" };
+var loc = new RequestLocalizationOptions()
+    .SetDefaultCulture("pt-BR")
+    .AddSupportedCultures(supported)
+    .AddSupportedUICultures(supported);
+loc.RequestCultureProviders.Clear();
+loc.RequestCultureProviders.Add(new AcceptLanguageHeaderRequestCultureProvider());
 
-// Configure the HTTP request pipeline.
+app.UseRequestLocalization(loc);
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

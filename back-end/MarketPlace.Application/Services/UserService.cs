@@ -18,6 +18,7 @@ namespace MarketPlace.Application.Services
         private readonly IJwtService _jwtService;
         private readonly IMailService _mailService;
         private readonly IAppSettings _appSettings;
+        private readonly IMessageLocalizer _messageLocalizer;
         public UserService(IUserRepository userRepository,
                            IEmailTemplateService emailTemplateService,
                            IValidator<UserDTO> validator,
@@ -25,7 +26,7 @@ namespace MarketPlace.Application.Services
                            IEncryptionService encryptionService,
                            IJwtService jwtService,
                            IMailService mailService,
-                           IAppSettings appSettings)
+                           IAppSettings appSettings, IMessageLocalizer messageLocalizer)
         {
             _userRepository = userRepository;
             _emailTemplateService = emailTemplateService;
@@ -35,6 +36,7 @@ namespace MarketPlace.Application.Services
             _jwtService = jwtService;
             _mailService = mailService;
             _appSettings = appSettings;
+            _messageLocalizer = messageLocalizer;
         }
         public async Task<MethodResponse> Create(UserDTO model)
         {
@@ -338,6 +340,10 @@ namespace MarketPlace.Application.Services
                 result.Update(500, 500, "Error", e.Message);
             }
             return result;
+        }
+        public async Task<string> teste()
+        {
+            return _messageLocalizer["Teste"];
         }
     }
 }

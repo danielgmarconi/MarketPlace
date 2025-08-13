@@ -12,6 +12,7 @@ namespace MarketPlace.Application.Validators
                 .EmailAddress().WithMessage("Email is required.");
             RuleFor(x => x.Password)
                 .NotNull().NotEmpty().WithMessage("Password is required.");
+
         }
     }
 }
