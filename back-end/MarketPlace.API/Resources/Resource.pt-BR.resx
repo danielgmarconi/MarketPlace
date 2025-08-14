@@ -135,4 +135,7 @@
   <data name="Is-Required" xml:space="preserve">
     <value>{0} é obrigatório.</value>
   </data>
+  <data name="Password-change-email-Sent" xml:space="preserve">
+    <value>O email de alteração de senha foi enviado.</value>
+  </data>
 </root>

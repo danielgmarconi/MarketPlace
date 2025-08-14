@@ -298,7 +298,7 @@ namespace MarketPlace.Application.Services
                 User.UserGuid = null;
                 await _userRepository.Update(User);
 
-                result.Update(true, 200, "Successfully executed", "Password change email has been sent.");
+                result.Update(true, 200, "Successfully executed", _messageLocalizer["Password-change-email-Sent"]);
             }
             catch (Exception e)
             {
