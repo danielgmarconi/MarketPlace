@@ -117,7 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Teste" xml:space="preserve">
-    <value>Generico</value>
+  <data name="Account-Blocked-Change-Password" xml:space="preserve">
+    <value>Conta bloqueada, necesssita de aleração de senha. Link no email.</value>
+  </data>
+  <data name="Account-Not-Activated" xml:space="preserve">
+    <value>Conta não ativada.</value>
+  </data>
+  <data name="Account-Not-Registered" xml:space="preserve">
+    <value>Conta não registrada.</value>
+  </data>
+  <data name="Blocked-Account" xml:space="preserve">
+    <value>Conta bloqueada.</value>
+  </data>
+  <data name="Invalid" xml:space="preserve">
+    <value>{0} invalido.</value>
+  </data>
+  <data name="Is-Required" xml:space="preserve">
+    <value>{0} é obrigatório.</value>
   </data>
 </root>

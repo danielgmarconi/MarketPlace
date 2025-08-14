@@ -26,7 +26,8 @@ namespace MarketPlace.Application.Services
                            IEncryptionService encryptionService,
                            IJwtService jwtService,
                            IMailService mailService,
-                           IAppSettings appSettings, IMessageLocalizer messageLocalizer)
+                           IAppSettings appSettings, 
+                           IMessageLocalizer messageLocalizer)
         {
             _userRepository = userRepository;
             _emailTemplateService = emailTemplateService;
@@ -192,7 +193,6 @@ namespace MarketPlace.Application.Services
             var result = new MethodResponse();
             try
             {
-                result.Update(501, "Invalid data");
                 if (model == null)
                 {
                     result.Update(400, "Invalid data");
@@ -207,25 +207,22 @@ namespace MarketPlace.Application.Services
                 var user = await _userRepository.Get(model.Email);
                 if (user == null)
                 {
-                    result.Update(500, 2, "Error", "Account not registered");
+                    result.Update(500, 2, "Error", _messageLocalizer["Account-Not-Registered"]);
                     return result;
                 }
                 if (!user.IsBlocked.Value && user.Status.Equals("P"))
-                {
-                    user.Password = string.Empty;
-                    result.Update(500, 3, "Account not activated", (UserDTO)user);
+                {   
+                    result.Update(500, 3, "Account not activated", _messageLocalizer["Account-Not-Registered"]);
                     return result;
                 }
                 if (user.IsBlocked.Value && user.Status.Equals("B"))
                 {
-                    user.Password = string.Empty;
-                    result.Update(500, 4, "blocked account", (UserDTO)user);
+                    result.Update(500, 4, "Blocked account", _messageLocalizer["Account-Not-Activated"]);
                     return result;
                 }
                 if (user.IsBlocked.Value && user.Status.Equals("L"))
                 {
-                    user.Password = string.Empty;
-                    result.Update(500, 5, "Account blocked, password change required", (UserDTO)user);
+                    result.Update(500, 5, "Account blocked, password change required. Link in email.", _messageLocalizer["Account-Blocked-Change-Password"]);
                     return result;
                 }
                 if (!_encryptionService.Valid(user.Password, model.Password))
@@ -261,7 +258,7 @@ namespace MarketPlace.Application.Services
                     result.Update(true, 200, "Successfully executed", "Account activated.");
                 }
                 else
-                    result.Update(500, 6, "Error", "invalid guid");
+                    result.Update(500, 6, "Error", _messageLocalizer.Get("Invalid", "UserGuid"));
 
             }
             catch (Exception e)
@@ -284,7 +281,7 @@ namespace MarketPlace.Application.Services
                 var list = await _userRepository.Get(new User() { Email = email });
                 if (list == null || list.Count == 0)
                 {
-                    result.Update(500, 2, "Error", "Account not registered");
+                    result.Update(500, 2, "Error", _messageLocalizer["Account-Not-Registered"]);
                     return result;
                 }
                 var User = list.FirstOrDefault();
