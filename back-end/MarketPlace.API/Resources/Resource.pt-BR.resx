@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Account-Activated" xml:space="preserve">
+    <value>Conta ativada.</value>
+  </data>
   <data name="Account-Blocked-Change-Password" xml:space="preserve">
     <value>Conta bloqueada, necesssita de aleração de senha. Link no email.</value>
   </data>
@@ -132,10 +135,19 @@
   <data name="Invalid" xml:space="preserve">
     <value>{0} invalido.</value>
   </data>
+  <data name="Invalid-Password" xml:space="preserve">
+    <value>The Password must be between 8 and 20 characters long, including at least one uppercase letter, one lowercase letter, one number, and one special character.</value>
+  </data>
   <data name="Is-Required" xml:space="preserve">
     <value>{0} é obrigatório.</value>
   </data>
-  <data name="Password-change-email-Sent" xml:space="preserve">
+  <data name="Max-Value" xml:space="preserve">
+    <value>{0} deve ter no maximo {1} caracteres.</value>
+  </data>
+  <data name="Min-Value" xml:space="preserve">
+    <value>{0} deve ter no minimo {1} caracteres.</value>
+  </data>
+  <data name="Password-Change-Email-Sent" xml:space="preserve">
     <value>O email de alteração de senha foi enviado.</value>
   </data>
 </root>

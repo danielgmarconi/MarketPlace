@@ -255,7 +255,7 @@ namespace MarketPlace.Application.Services
                     user.ModificationDate = null;
                     user.UserGuid = null;
                     await _userRepository.Update(user);
-                    result.Update(true, 200, "Successfully executed", "Account activated.");
+                    result.Update(true, 200, "Successfully executed", _messageLocalizer["Account-Activated"]);
                 }
                 else
                     result.Update(500, 6, "Error", _messageLocalizer.Get("Invalid", "UserGuid"));
@@ -298,7 +298,7 @@ namespace MarketPlace.Application.Services
                 User.UserGuid = null;
                 await _userRepository.Update(User);
 
-                result.Update(true, 200, "Successfully executed", _messageLocalizer["Password-change-email-Sent"]);
+                result.Update(true, 200, "Successfully executed", _messageLocalizer["Password-Change-Email-Sent"]);
             }
             catch (Exception e)
             {
@@ -316,7 +316,7 @@ namespace MarketPlace.Application.Services
             }
             try
             {
-                var validatorResult = await _validator.ValidateAsync(model, options => options.IncludeRuleSets("Update"));
+                var validatorResult = await _validator.ValidateAsync(model, options => options.IncludeRuleSets("ChangePassword"));
                 if (!validatorResult.IsValid)
                 {
                     result.Update(500, 1, "Invalid data", validatorResult.Errors.Select(e => e.ErrorMessage).ToList());

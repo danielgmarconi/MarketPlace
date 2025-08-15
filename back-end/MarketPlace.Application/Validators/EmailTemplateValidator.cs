@@ -9,12 +9,11 @@ namespace MarketPlace.Application.Validators;
 
 public class EmailTemplateValidator : AbstractValidator<EmailTemplateDTO>
 {
-    public EmailTemplateValidator(IEmailTemplateRepository emailTemplateRepository)
+    public EmailTemplateValidator(IEmailTemplateRepository emailTemplateRepository, IMessageLocalizer messageLocalizer)
     {
         RuleSet("Create", () => {
             RuleFor(x => x.Name)
-                .NotNull().WithMessage("Name is required.")
-                .NotEmpty().WithMessage("Name is required.")
+                .Must(x => !string.IsNullOrEmpty(x)).WithMessage(messageLocalizer.Get("Is-Required", "Name"))
                 .MinimumLength(7).WithMessage("The Name must be at least 7 characters long.")
                 .MaximumLength(100).WithMessage("The Name must have a maximum of 100 characters.");
             RuleFor(x => x.Description)
@@ -30,7 +29,7 @@ public class EmailTemplateValidator : AbstractValidator<EmailTemplateDTO>
         });
         RuleSet("Update", () => {
             RuleFor(x => x.Id)
-                .NotNull().WithMessage("Name is required.");
+                .NotNull().WithMessage(messageLocalizer.Get("Is-Required", "Id"));
             RuleFor(x => x)
                 .Must(x => ValidateIdUpdate(emailTemplateRepository, x)).WithMessage("Id does not exist.");
             RuleFor(x => x.Name)
