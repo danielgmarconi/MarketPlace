@@ -132,11 +132,20 @@
   <data name="Blocked-Account" xml:space="preserve">
     <value>Conta bloqueada.</value>
   </data>
+  <data name="Email-Different-Registered" xml:space="preserve">
+    <value>O Email é diferente do registrado</value>
+  </data>
+  <data name="Email-Exists" xml:space="preserve">
+    <value>O email já existe.</value>
+  </data>
+  <data name="Enter-Id-UserGuid" xml:space="preserve">
+    <value>Digite o ID Id ou UserGuid.</value>
+  </data>
   <data name="Invalid" xml:space="preserve">
     <value>{0} invalido.</value>
   </data>
   <data name="Invalid-Password" xml:space="preserve">
-    <value>The Password must be between 8 and 20 characters long, including at least one uppercase letter, one lowercase letter, one number, and one special character.</value>
+    <value>A senha deve ter entre 8 e 20 caracteres, incluindo pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial.</value>
   </data>
   <data name="Is-Required" xml:space="preserve">
     <value>{0} é obrigatório.</value>
