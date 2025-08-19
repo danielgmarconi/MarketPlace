@@ -132,6 +132,9 @@
   <data name="Blocked-Account" xml:space="preserve">
     <value>Blocked account.</value>
   </data>
+  <data name="Changed-Password" xml:space="preserve">
+    <value>The changed password cannot be the same as the old one.</value>
+  </data>
   <data name="Email-Different-Registered" xml:space="preserve">
     <value>Email is different from the one registered</value>
   </data>

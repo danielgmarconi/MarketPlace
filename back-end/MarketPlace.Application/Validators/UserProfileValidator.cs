@@ -49,7 +49,7 @@ namespace MarketPlace.Application.Validators
                     .Must(x => ValidateGuid(x))
                     .WithMessage(messageLocalizer.Get("Invalid", "UserGuid"));
                 RuleFor(x => x.Password)
-                    .Must(x => string.IsNullOrWhiteSpace(x)).WithMessage(messageLocalizer.Get("Is-Required", "Password"))
+                    .Must(x => !string.IsNullOrEmpty(x)).WithMessage(messageLocalizer.Get("Is-Required", "Password"))
                     .Matches(RegexValidator.Password)
                     .WithMessage(messageLocalizer["Invalid-Password"]);
 

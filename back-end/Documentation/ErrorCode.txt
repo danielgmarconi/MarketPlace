@@ -4,4 +4,5 @@
 4 - blocked account
 5 - account blocked, password change required
 6 - invalid guid
+7 - The changed password cannot be the same as the old one.
 500 - Error

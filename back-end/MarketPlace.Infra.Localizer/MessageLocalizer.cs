@@ -4,7 +4,6 @@ using Microsoft.Extensions.Localization;
 
 namespace MarketPlace.Infra.Localizer
 {
-    public sealed class Resource { }
     public class MessageLocalizer : IMessageLocalizer
     {
         private readonly IStringLocalizer _inner;

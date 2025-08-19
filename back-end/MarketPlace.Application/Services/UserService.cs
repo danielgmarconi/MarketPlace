@@ -322,25 +322,38 @@ namespace MarketPlace.Application.Services
                     result.Update(500, 1, "Invalid data", validatorResult.Errors.Select(e => e.ErrorMessage).ToList());
                     return result;
                 }
-                var x = model.Password;
+                var password = model.Password;
                 model.Password = null;
+                if (model.UserGuid != null)
+                {
+                    model.IsBlocked = true;
+                    model.Status = "L";
+                }               
                 var entity = (await _userRepository.Get(model)).FirstOrDefault();
-                //entity.Update(model.FullName ?? entity.FullName,
-                //              model.Email,
-                //              model.Password == null ? entity.Password : _encryptionService.Encrypt(model.Password));
+                if(entity == null)
+                {
+                    result.Update(500, 2, "Invalid data", _messageLocalizer["Account-Not-Registered"]);
+                    return result;
+                }
+                if (_encryptionService.Valid(entity.Password, password))
+                {
+                    result.Update(500, 7, "Invalid data", _messageLocalizer["Changed-Password"]);
+                    return result;
+                }
+                entity.Password = _encryptionService.Encrypt(password);
+                entity.Status = "A";
+                entity.IsBlocked = false;
+                entity.CreationDate = null;
+                entity.ModificationDate = null;
+                entity.UserGuid = null;
                 await _userRepository.Update(entity);
-
-                result.Update(true, 200, "Created successfully", (UserDTO)entity);
+                result.Update(true, 200, "Created successfully");
             }
             catch (Exception e)
             {
                 result.Update(500, 500, "Error", e.Message);
             }
             return result;
-        }
-        public async Task<string> teste()
-        {
-            return _messageLocalizer["Teste"];
         }
     }
 }

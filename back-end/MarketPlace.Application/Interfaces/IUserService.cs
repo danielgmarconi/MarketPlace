@@ -15,5 +15,4 @@ public interface IUserService
     Task<MethodResponse> ActivateAccount(string guid);
     Task<MethodResponse> LostPassword(string email);
     Task<MethodResponse> ChangePassword(UserDTO model);
-    Task<string> teste();
 }

@@ -17,7 +17,7 @@ public class EmailTemplateValidator : AbstractValidator<EmailTemplateDTO>
                 .MinimumLength(7).WithMessage("The Name must be at least 7 characters long.")
                 .MaximumLength(100).WithMessage("The Name must have a maximum of 100 characters.");
             RuleFor(x => x.Description)
-                .MaximumLength(500).When(x => !string.IsNullOrWhiteSpace(x.Description)).WithMessage("The Description must have a maximum of 500 characters.");
+                .MaximumLength(500).When(x => !string.IsNullOrEmpty(x.Description)).WithMessage("The Description must have a maximum of 500 characters.");
             RuleFor(x => x.NumberParameters)
                 .NotNull().WithMessage("NumberParameters is required.")
                 .NotEmpty().WithMessage("NumberParameters is required.")
@@ -38,7 +38,7 @@ public class EmailTemplateValidator : AbstractValidator<EmailTemplateDTO>
                 .MinimumLength(7).WithMessage("The Name must be at least 7 characters long.")
                 .MaximumLength(100).WithMessage("The Name must have a maximum of 100 characters.");
             RuleFor(x => x.Description)
-                .MaximumLength(500).When(x => !string.IsNullOrWhiteSpace(x.Description)).WithMessage("The Description must have a maximum of 500 characters.");
+                .MaximumLength(500).When(x => !string.IsNullOrEmpty(x.Description)).WithMessage("The Description must have a maximum of 500 characters.");
             RuleFor(x => x.NumberParameters)
                 .NotNull().WithMessage("NumberParameters is required.")
                 .NotEmpty().WithMessage("NumberParameters is required.")

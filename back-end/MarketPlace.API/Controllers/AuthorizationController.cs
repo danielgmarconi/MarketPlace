@@ -57,19 +57,9 @@ public class AuthorizationController : ControllerBase
     [HttpPost]
     [Route("ChangePassword")]
     [AllowAnonymous]
-    public async Task<IActionResult> RegistChangePassworder([FromBody] UserDTO userDTO)
+    public async Task<IActionResult> ChangePassword([FromBody] UserDTO userDTO)
     {
         var result = await _userService.ChangePassword(userDTO);
         return StatusCode(result.StatusCode, result);
-    }
-
-    [HttpGet]
-    [Route("teste")]
-    [AllowAnonymous]
-    public async Task<IActionResult> teste()
-    {
-
-        return Ok(await _userService.teste() );
-
     }
 }
