@@ -41,7 +41,7 @@
         </div>
         <div class="input-group mb-3">
           <span class="input-group-text"><i class="fas fa-key"></i></span>
-          <input [type]="showPassword ? 'text' : 'password'" class="form-control" placeholder="Senha" formControlName="password" (input)="verificarForcaSenha($event)">
+          <input [type]="showPassword ? 'text' : 'password'" class="form-control" placeholder="Senha" formControlName="password" (input)="checkPasswordStrength($event)">
           <button type="button" class="btn-group-text-like" (click)="showPassword = !showPassword" aria-label="Mostrar/ocultar senha">
             <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
           </button>
@@ -71,24 +71,27 @@
       }
       @if(modalType=='C')
       {
-      <h3 class="text-center mb-4">Alteração de Senha</h3>
-      <form>
+      <form [formGroup]="formChangePassword">
+        <h3 class="text-center mb-4">Alteração de Senha</h3>
         <div class="input-group mb-3">
           <span class="input-group-text"><i class="fas fa-key"></i></span>
-          <input type="password" name="password" class="form-control" placeholder="Senha" (input)="verificarForcaSenha($event)">
+          <input [type]="showPassword ? 'text' : 'password'" class="form-control" placeholder="Senha" formControlName="password" (input)="checkPasswordStrength($event)">
+          <button type="button" class="btn-group-text-like" (click)="showPassword = !showPassword" aria-label="Mostrar/ocultar senha">
+            <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+          </button>
         </div>
         <div class="password-strength mt-2" [ngClass]="forcaClasse">
           {{ forcaMensagem }}
         </div>
         <div class="input-group mb-3">
           <span class="input-group-text"><i class="fas fa-key"></i></span>
-          <input [type]="showRepeatPassword ? 'text' : 'password'" name="repeatPassword" class="form-control" placeholder="Repetir Senha">
+          <input [type]="showRepeatPassword ? 'text' : 'password'" class="form-control" placeholder="Repetir Senha" formControlName="repeatPassword">
           <button type="button" class="btn-group-text-like" (click)="showRepeatPassword = !showRepeatPassword" aria-label="Mostrar/ocultar senha">
             <i class="fas" [ngClass]="showRepeatPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
           </button>
         </div>
         <div class="d-flex justify-content-end gap-2">
-          <button class="btn login_btn" type="submit" (click)="create()">Criar</button>
+          <button class="btn login_btn" type="submit" (click)="changePasswordSend()">Criar</button>
           <button class="btn login_btn" type="submit" (click)="cancel()">Cancelar</button>
         </div>
       </form>

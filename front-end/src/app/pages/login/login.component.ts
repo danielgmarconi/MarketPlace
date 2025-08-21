@@ -19,14 +19,14 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit{
-
-  fullName: string = '';
+  userGuid: string = '';
   forcaMensagem: string = '';
   forcaClasse: string = '';
   eMail: string = '';
   modalType: string = '';
   formLogin!: FormGroup;
   formNewAccount!: FormGroup;
+  formChangePassword!: FormGroup;
   showPassword: boolean = false;
   showRepeatPassword: boolean = false;
   constructor(private route: ActivatedRoute,
@@ -48,7 +48,11 @@ export class LoginComponent implements OnInit{
     else if(action == 'lostpassword')
       this.lostPassword();
     else if(action == 'changepassword')
+    {
+      this.userGuid = this.route.snapshot.paramMap.get('guid')??'';
       this.changePassword();
+    }
+
   }
   createFromGrupLogin()
   {
@@ -63,6 +67,13 @@ export class LoginComponent implements OnInit{
       fullName: ['', [Validators.required, CustomValidatorsFormBuilder.fullName()]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8),CustomValidatorsFormBuilder.password()]]
+    });
+  }
+  createFromGrupChangePassword()
+  {
+      this.formChangePassword = this.fb.group({
+      password: ['', [Validators.required, Validators.minLength(8),CustomValidatorsFormBuilder.password()]],
+      repeatPassword: ['', [Validators.required, Validators.minLength(8),CustomValidatorsFormBuilder.password()]]
     });
   }
   messageValidationLogin()
@@ -93,8 +104,24 @@ export class LoginComponent implements OnInit{
     const ctrlPassword = this.formNewAccount.get('password');
     if (ctrlPassword && ctrlPassword.errors && ctrlPassword.errors['required']) lista.push('Campo Senha obrigatório.');
     if (ctrlPassword && ctrlPassword.errors && ctrlPassword.errors['minlength']) lista.push('Tamanho da senha invalido.');
-    if (ctrlPassword && ctrlPassword.errors && ctrlPassword.errors['password']) lista.push('Esta senha não atende os critérios mínimos que são caracteres maiúsculo, minusculo, numeros e caracteres especiais ');
+    if (ctrlPassword && ctrlPassword.errors && ctrlPassword.errors['password']) lista.push('Esta senha não atende os critérios mínimos que são caracteres maiúsculo, minusculo, numeros e caracteres especiais');
 
+    for(let a=0; a<lista.length; a++)
+      msg+= a!=0 ? ('<br>' + lista[a]) : lista[a];
+    this.messageboxService.openModal('Atenção', msg, IconType.warning);
+  }
+  messageValidationChangePassword()
+  {
+    const lista: string[] = [];
+    let msg : string = ''
+    const ctrlPassword = this.formChangePassword.get('password');
+    if (ctrlPassword && ctrlPassword.errors && ctrlPassword.errors['required']) lista.push('Campo Senha obrigatório.');
+    if (ctrlPassword && ctrlPassword.errors && ctrlPassword.errors['minlength']) lista.push('Tamanho da Senha invalido.');
+    if (ctrlPassword && ctrlPassword.errors && ctrlPassword.errors['password']) lista.push('Esta Senha não atende os critérios mínimos que são caracteres maiúsculo, minusculo, numeros e caracteres especiais');
+    const ctrlRepeatPassword = this.formChangePassword.get('repeatPassword');
+    if (ctrlRepeatPassword && ctrlRepeatPassword.errors && ctrlRepeatPassword.errors['required']) lista.push('Campo Repetir Senha obrigatório.');
+    if (ctrlRepeatPassword && ctrlRepeatPassword.errors && ctrlRepeatPassword.errors['minlength']) lista.push('Tamanho da Repetir Senha invalido.');
+    if (ctrlRepeatPassword && ctrlRepeatPassword.errors && ctrlRepeatPassword.errors['password']) lista.push('Esta Repetir Senha não atende os critérios mínimos que são caracteres maiúsculo, minusculo, numeros e caracteres especiais');
     for(let a=0; a<lista.length; a++)
       msg+= a!=0 ? ('<br>' + lista[a]) : lista[a];
     this.messageboxService.openModal('Atenção', msg, IconType.warning);
@@ -119,6 +146,7 @@ export class LoginComponent implements OnInit{
   changePassword(){
     this.showPassword = false;
     this.modalType = 'C';
+    this.createFromGrupChangePassword()
   }
   resetPassword()
   {
@@ -221,7 +249,7 @@ export class LoginComponent implements OnInit{
           else
             this.messageboxService.openModal('Atenção', 'Erro interno', IconType.danger);
         }
-      })
+      });
   }
   emailExists(event: FocusEvent)
   {
@@ -247,7 +275,7 @@ export class LoginComponent implements OnInit{
       }
     }
   }
-  verificarForcaSenha(event: Event) {
+  checkPasswordStrength(event: Event) {
     const senha = (event.target as HTMLInputElement).value;
     const temLetra = /[a-zA-Z]/.test(senha);
     const temNumero = /[0-9]/.test(senha);
@@ -266,5 +294,45 @@ export class LoginComponent implements OnInit{
       this.forcaClasse = 'fraca';
     }
   }
-
+  changePasswordSend()
+  {
+    if (!this.formChangePassword.valid)
+    {
+      this.messageValidationChangePassword();
+      return;
+    }
+    if(this.formChangePassword.get('password')?.value != this.formChangePassword.get('repeatPassword')?.value)
+    {
+      this.messageboxService.openModal('Atenção', "Repetir Senha esta diferente da Senha.", IconType.warning);
+      return;
+    }
+    const user: User = {userGuid: this.userGuid,
+                        password: this.formChangePassword.get('password')?.value};
+    this.authService.changePassword(user).subscribe({
+      next: (res) =>{
+          this.messageboxService.openModal('Atenção', 'Senha alterada com sucesso.', IconType.success);
+          this.formChangePassword.reset;
+          this.loginOpen();
+        },
+        error: (err) => {
+          if(err.status == 400)
+            this.messageboxService.openModal('Atenção', 'Péssima requisição.', IconType.danger);
+          else if(err.status == 500)
+          {
+            let methodResponse:MethodResponse = err.error;
+            if(methodResponse.errorCode == 2)
+              this.messageboxService.openModal('Atenção', "Conta não registrada.", IconType.info);
+            else if(methodResponse.errorCode == 7)
+              this.messageboxService.openModal('Atenção', "A senha alterada não pode ser igual à antiga.", IconType.info);
+            else
+            {
+              let methodResponse:MethodResponse = err.error;
+              this.messageboxService.openModal('Atenção', methodResponse.response, IconType.danger);
+            }
+          }
+          else
+            this.messageboxService.openModal('Atenção', 'Erro interno', IconType.danger);
+        }
+    })
+  }
 }

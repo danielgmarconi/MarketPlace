@@ -36,6 +36,10 @@ export class AuthService {
   {
     return this.http.get<MethodResponse>(environment.webapi +'/Authorization/LostPassword/' + email);
   }
+  changePassword(user:User)
+  {
+    return this.http.post<MethodResponse>(environment.webapi +'/Authorization/ChangePassword', user);
+  }
   logout() {
     localStorage.removeItem(this.tokenKey);
   }
